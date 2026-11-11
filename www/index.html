@@ -6,7 +6,10 @@
 *{box-sizing:border-box}body{margin:0;font-family:"Noto Sans Devanagari",sans-serif;background:#f5f3f8;color:#222}
 header{background:#08558f;color:#fff;padding:16px;font-size:20px;font-weight:700}
 .btn{display:block;width:calc(100% - 32px);margin:16px;padding:16px;border:0;border-radius:12px;background:#08558f;color:#fff;font-size:18px;font-weight:700}
-.card{margin:8px 16px;padding:14px;background:#fff;border-radius:10px;display:flex;justify-content:space-between;box-shadow:0 1px 3px #0003}
+.card{margin:8px 16px;padding:12px 14px;background:#fff;border-radius:10px;display:flex;align-items:center;gap:10px;box-shadow:0 1px 3px #0003}
+.card .info{flex:1;display:flex;flex-direction:column;gap:4px}
+.card .info small{color:#666;font-size:14px}
+.del{border:1px solid #c0392b;color:#c0392b;background:#fff;border-radius:8px;padding:8px 12px;font-size:15px}
 .row{display:flex;align-items:center;padding:10px 16px;border-bottom:1px solid #d5dce6;background:#fff}
 .row:nth-child(even){background:#e6eff7}
 .row label{flex:1;display:flex;align-items:center;gap:12px;font-size:18px}
@@ -125,9 +128,16 @@ function home(){
   const h=hist();
   app.innerHTML=`<header>${SHOP} – Saman List</header>
   <button class="btn" id="new">+ New Entry</button>
-  ${h.map(x=>`<div class="card" data-id="${x.id}"><b>${x.date}</b><span>${x.count} items</span></div>`).join("")||'<p style="text-align:center;color:#888">Abhi koi list save nahi hai</p>'}`;
+  ${h.map(x=>`<div class="card"><div class="info" data-id="${x.id}"><b>${x.date}</b><small>${x.count} items</small></div><button class="del" data-id="${x.id}">🗑 Delete</button></div>`).join("")||'<p style="text-align:center;color:#888">Abhi koi list save nahi hai</p>'}`;
   $("#new").onclick=entry;
-  document.querySelectorAll(".card").forEach(c=>c.onclick=()=>view(c.dataset.id));
+  document.querySelectorAll(".info").forEach(c=>c.onclick=()=>view(c.dataset.id));
+  document.querySelectorAll(".del").forEach(b=>b.onclick=()=>del(b.dataset.id));
+}
+async function del(id){
+  if(!confirm("Is list ko delete karein?"))return;
+  try{await FS().deleteFile({path:`lists/${id}.jpg`,directory:"DATA"});}catch(e){}
+  localStorage.setItem("hist",JSON.stringify(hist().filter(x=>String(x.id)!==String(id))));
+  home();
 }
 async function view(id){
   const r=await FS().readFile({path:`lists/${id}.jpg`,directory:"DATA"});
@@ -147,30 +157,32 @@ function entry(){
   $("#exp").onclick=exportList;
 }
 function draw(rows,dateStr){
-  const W=1080,H=1920,c=document.createElement("canvas");c.width=W;c.height=H;const g=c.getContext("2d");
+  const W=1080,S=2262/W,H=4159/S,c=document.createElement("canvas");
+  c.width=2262;c.height=4159;const g=c.getContext("2d");g.scale(S,S);
   const L=80,R=1000,HF='"Noto Sans Devanagari","Noto Sans",sans-serif';
+  const SF='"Noto Serif",Georgia,"Times New Roman",serif';
   g.fillStyle="#f5f3f8";g.fillRect(0,0,W,H);
   g.fillStyle="#0b4f8f";g.textBaseline="alphabetic";g.textAlign="left";
-  g.font="italic bold 88px cursive";g.fillText(SHOP,L,150);
-  g.font="italic bold 38px cursive";g.fillText(PLACE,L,215);
-  g.fillRect(L,240,R-L,4);
-  g.fillStyle="#fff";g.fillRect(L,255,R-L,56);g.strokeStyle="#777";g.lineWidth=1.5;g.strokeRect(L,255,R-L,56);
-  g.fillStyle="#000";g.font="bold 32px Arial";g.fillText("Date:",L+20,293);g.fillText("Total Items :",650,293);
-  g.font="30px Arial";g.fillText(dateStr,L+145,294);g.fillText(String(rows.length),880,294);
-  g.fillStyle="#08558f";g.fillRect(L,330,R-L,100);
-  g.fillStyle="#fff";g.font="italic bold 56px cursive";
-  g.fillText("No.",L+25,400);g.fillText("Name List",L+130,400);
-  g.textAlign="right";g.fillText("Quantity",860,400);g.fillText("Unit",R-15,400);
-  const top=430,n=Math.max(30,rows.length),rh=(H-top-10)/n,fs=Math.min(40,rh*0.68);
+  g.font=`bold 84px ${SF}`;g.fillText(SHOP,L,120);
+  g.font=`bold 36px ${SF}`;g.fillText(PLACE,L,175);
+  g.fillRect(L,195,R-L,4);
+  g.fillStyle="#fff";g.fillRect(L,212,R-L,52);g.strokeStyle="#777";g.lineWidth=1.5;g.strokeRect(L,212,R-L,52);
+  g.fillStyle="#000";g.font=`bold 30px ${SF}`;g.fillText("Date:",L+20,247);g.fillText("Total Items :",650,247);
+  g.font=`30px ${SF}`;g.fillText(dateStr,L+135,247);g.fillText(String(rows.length),880,247);
+  g.fillStyle="#08558f";g.fillRect(L,280,R-L,70);
+  g.fillStyle="#fff";g.font=`bold 44px ${SF}`;
+  g.fillText("No.",L+25,328);g.fillText("Name List",L+130,328);
+  g.textAlign="right";g.fillText("Quantity",860,328);g.fillText("Unit",R-15,328);
+  const top=350,n=Math.max(40,rows.length),rh=(H-top-10)/n,fs=Math.min(40,rh*0.68);
   for(let i=0;i<n;i++){
     const y=top+i*rh;g.fillStyle=i%2?"#e6eff7":"#cfd8e6";g.fillRect(L,y,R-L,rh);
     const r=rows[i];if(!r)continue;const by=y+rh*0.72;g.fillStyle="#111";
     g.font=`${fs}px ${HF}`;g.textAlign="right";g.fillText(String(i+1),175,by);
-    g.textAlign="left";g.fillText(r.name,200,by);g.fillText("-",650,by);
+    g.textAlign="left";g.fillText(r.name,200,by,440);g.fillText("-",650,by);
     g.textAlign="right";g.fillText(r.qty,860,by);
     g.font=`bold ${fs}px ${HF}`;g.fillText(r.unit,R-15,by);
   }
-  return c.toDataURL("image/jpeg",0.95).split(",")[1];
+  return c.toDataURL("image/jpeg",0.98).split(",")[1];
 }
 async function exportList(){
   const rows=[];

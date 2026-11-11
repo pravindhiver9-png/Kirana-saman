@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pravin Dhiver Kirana Store</title>
+    <!-- html2canvas library for 9:16 JPG Export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #eef2f7;
+            margin: 0;
+            padding: 10px;
+        }
+        .app-container {
+            max-width: 480px;
+            margin: auto;
+            background: #ffffff;
+            min-height: 90vh;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .screen {
+            display: none;
+            padding: 15px;
+            flex: 1;
+            flex-direction: column;
+        }
+        .screen.active {
+            display: flex;
+        }
+        /* Header styling matching reference */
+        .shop-header {
+            border-bottom: 2px solid #002b5c;
+            padding-bottom: 8px;
+            margin-bottom: 10px;
+        }
+        .shop-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: #002b5c;
+            margin: 0;
+        }
+        .shop-sub {
+            font-size: 13px;
+            color: #555;
+            margin-bottom: 5px;
+        }
+        .meta-bar {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            font-weight: bold;
+            color: #333;
+            background: #f1f5f9;
+            padding: 6px 10px;
+            border-radius: 4px;
+        }
+        /* Table formatting for high capacity compact view */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 5px;
+        }
+        th, td {
+            padding: 4px 5px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 12px;
+        }
+        th {
+            background-color: #002b5c;
+            color: white;
+            font-size: 12.5px;
+        }
+        .center { text-align: center; }
+        .right { text-align: right; }
+        
+        input[type="number"] {
+            width: 40px;
+            padding: 2px;
+            font-size: 12px;
+            text-align: center;
+            border: 1px solid #cbd5e1;
+            border-radius: 3px;
+        }
+        /* Add item box */
+        .add-box {
+            background: #f8fafc;
+            padding: 8px;
+            border-radius: 6px;
+            margin-top: 10px;
+            display: flex;
+            gap: 5px;
+            border: 1px dashed #cbd5e1;
+        }
+        .add-box input, .add-box select {
+            padding: 5px;
+            font-size: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 3px;
+            flex: 1;
+        }
+        .btn {
+            background-color: #002b5c;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            font-size: 14px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            text-align: center;
+        }
+        .btn-green {
+            background-color: #16a34a;
+        }
+        .btn-container {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+        }
+        /* Home screen styles */
+        .history-card {
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+        .history-card:hover {
+            background: #f1f5f9;
+        }
+        /* 9:16 Image Export Container Layout */
+        #capture-area {
+            background: #ffffff;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+
+    <!-- SCREEN 1: HOME PAGE (Saved Lists & New Entry Button) -->
+    <div id="homeScreen" class="screen active">
+        <div class="shop-header">
+            <h2 class="shop-title">Pravin Dhiver</h2>
+            <div class="shop-sub">Kilepar</div>
+        </div>
+        
+        <h3>Saved Lists (Non-Editable)</h3>
+        <div style="flex: 1; overflow-y: auto;" id="historyListContainer">
+            <p style="color: #777; font-size: 13px;">Abhi tak koi list save nahi ki gayi hai.</p>
+        </div>
+
+        <button class="btn" style="margin-top: 15px;" onclick="openNewEntry()">➕ New Entry Karein</button>
+    </div>
+
+    <!-- SCREEN 2: NEW ENTRY PAGE (Editable & Add Item) -->
+    <div id="entryScreen" class="screen">
+        
+        <div style="flex: 1; overflow-y: auto; max-height: 65vh;">
+            <!-- Yeh area 9:16 JPG mein capture hoga -->
+            <div id="capture-area">
+                <div class="shop-header">
+                    <h2 class="shop-title">Pravin Dhiver</h2>
+                    <div class="shop-sub">Kilepar</div>
+                    <div class="meta-bar">
+                        <span id="current-date">Date: </span>
+                        <span id="total-items">Total Items: 0</span>
+                    </div>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 8%;" class="center">Sel</th>
+                            <th style="width: 10%;">No.</th>
+                            <th style="width: 47%;">Name List</th>
+                            <th style="width: 20%;" class="center">Quantity</th>
+                            <th style="width: 15%;" class="right">Unit</th>
+                        </tr>
+                    </thead>
+                    <tbody id="newItemTableBody">
+                        <!-- Master items dynamic load honge -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Naya Saman Jodne ka Section -->
+        <div class="add-box">
+            <input type="text" id="newStoreItemName" placeholder="Naya saman naam...">
+            <select id="newStoreItemUnit">
+                <option value="KG">KG</option>
+                <option value="पैकेट">पैकेट</option>
+                <option value="पत्ता">पत्ता</option>
+                <option value="नग">नग</option>
+                <option value="पूड़ा">पूड़ा</option>
+                <option value="पेटी">पेटी</option>
+                <option value="टिन">टिन</option>
+                <option value="बोरी">बोरी</option>
+            </select>
+            <button class="btn" style="padding: 5px 10px; font-size: 12px;" onclick="addNewMasterItem()">Jodein</button>
+        </div>
+
+        <div class="btn-container">
+            <button class="btn" style="background: #64748b; flex: 1;" onclick="goHome()">Back</button>
+            <button class="btn btn-green" style="flex: 2;" onclick="saveAndExportJPG()">Save & Export JPG</button>
+        </div>
+    </div>
+
+    <!-- SCREEN 3: VIEW SAVED LIST (Non-Editable View) -->
+    <div id="viewScreen" class="screen">
+        <div style="flex: 1; overflow-y: auto;" id="view-capture-area">
+            <!-- Purani non-editable list yahan dikhegi -->
+        </div>
+        <div class="btn-container">
+            <button class="btn" style="background: #64748b; width: 100%;" onclick="goHome()">Home Par Jaayein</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // Aapke dwara di gayi poori updated master list
+    let masterItems = [
+        { name: "आलू", unit: "KG" },
+        { name: "प्याज", unit: "KG" },
+        { name: "शक्कर", unit: "KG" },
+        { name: "अरहर दाल", unit: "KG" },
+        { name: "उड़द दाल", unit: "KG" },
+        { name: "बेसन", unit: "KG" },
+        { name: "सोयाबीन बड़ी", unit: "KG" },
+        { name: "मटर चना", unit: "KG" },
+        { name: "फल्लीदाना", unit: "KG" },
+        { name: "अरहर दाल (हल्का)", unit: "KG" },
+        { name: "उड़द दाल (हल्का)", unit: "KG" },
+        { name: "सूजी", unit: "पैकेट" },
+        { name: "रिलैक्स", unit: "पैकेट" },
+        { name: "आटा", unit: "पैकेट" },
+        { name: "मैदा", unit: "पैकेट" },
+        { name: "डाबर आँवला तेल 20", unit: "पैकेट" },
+        { name: "डाबर सरसों तेल 20", unit: "पैकेट" },
+        { name: "जीरा 10", unit: "पैकेट" },
+        { name: "कुरकुरे", unit: "पत्ता" },
+        { name: "चिप्स", unit: "पत्ता" },
+        { name: "टकाटक", unit: "पत्ता" },
+        { name: "चॉकलेट वाला", unit: "पत्ता" },
+        { name: "संसिल्क शैम्पू", unit: "पत्ता" },
+        { name: "क्लिनिक प्लस", unit: "पत्ता" },
+        { name: "मैगी", unit: "पत्ता" },
+        { name: "चिकन मसाला 5", unit: "पत्ता" },
+        { name: "चावमीन", unit: "पत्ता" },
+        { name: "इलायची 5", unit: "पत्ता" },
+        { name: "इलायची 10", unit: "पत्ता" },
+        { name: "काजू 10", unit: "पत्ता" },
+        { name: "पास्ता", unit: "पत्ता" },
+        { name: "संसिल्क", unit: "पत्ता" },
+        { name: "चिप्स हरा", unit: "पत्ता" },
+        { name: "चिप्स लाल", unit: "पत्ता" },
+        { name: "चिप्स नीला", unit: "पत्ता" },
+        { name: "लाइफबॉय", unit: "नग" },
+        { name: "एक्सपर्ट", unit: "नग" },
+        { name: "संतूर", unit: "नग" },
+        { name: "डेटॉल साबुन 10", unit: "नग" },
+        { name: "कपिल साबुन", unit: "नग" },
+        { name: "निरमा 20", unit: "नग" },
+        { name: "निरमा 10", unit: "नग" },
+        { name: "निरमा 50", unit: "नग" },
+        { name: "क्लोजअप 10", unit: "नग" },
+        { name: "सरसों तेल ½", unit: "नग" },
+        { name: "सरसों तेल 200g", unit: "नग" },
+        { name: "डालडा", unit: "नग" },
+        { name: "गजब चाय 20", unit: "नग" },
+        { name: "चायपत्ती 20", unit: "नग" },
+        { name: "नारियल", unit: "नग" },
+        { name: "सरगम 1kg", unit: "नग" },
+        { name: "सरगम निरमा 10", unit: "नग" },
+        { name: "अगरबत्ती सेंट वाला 10", unit: "नग" },
+        { name: "आशिकी", unit: "पूड़ा" },
+        { name: "गुड़ाखू", unit: "पूड़ा" },
+        { name: "राजश्री", unit: "पूड़ा" },
+        { name: "तारा", unit: "पूड़ा" },
+        { name: "मिच्चर 5 वाला", unit: "पूड़ा" },
+        { name: "चायपत्ती 10", unit: "पूड़ा" },
+        { name: "हल्दी पाउडर 10", unit: "पूड़ा" },
+        { name: "मिर्च पाउडर 10", unit: "पूड़ा" },
+        { name: "धनिया पाउडर 10", unit: "पूड़ा" },
+        { name: "हल्दी पाउडर 20", unit: "पूड़ा" },
+        { name: "मिर्च पाउडर 20", unit: "पूड़ा" },
+        { name: "धनिया पाउडर 20", unit: "पूड़ा" },
+        { name: "क्रैक जैक 5", unit: "पूड़ा" },
+        { name: "पतंजलि b5", unit: "पूड़ा" },
+        { name: "पतंजलि b10", unit: "पूड़ा" },
+        { name: "पारले जी", unit: "पूड़ा" },
+        { name: "नारियल बिस्कुट", unit: "पूड़ा" },
+        { name: "तम्बाकू", unit: "पूड़ा" },
+        { name: "अन्नी ब्लैक", unit: "पूड़ा" },
+        { name: "अन्नी कपरी", unit: "पूड़ा" },
+        { name: "माचिस 5", unit: "पूड़ा" },
+        { name: "माचिस", unit: "पूड़ा" },
+        { name: "अगरबत्ती 10", unit: "पूड़ा" },
+        { name: "क्रैक जैक", unit: "पूड़ा" },
+        { name: "दन्तकांति 20", unit: "पूड़ा" },
+        { name: "दन्तकांति 10", unit: "पूड़ा" },
+        { name: "तेल 1 लीटर", unit: "पेटी" },
+        { name: "तेल ½ लीटर", unit: "पेटी" },
+        { name: "तोष", unit: "पेटी" },
+        { name: "बल्ब 60w", unit: "पेटी" },
+        { name: "बल्ब", unit: "पेटी" },
+        { name: "तेल (kg)", unit: "टिन" },
+        { name: "शंकरभोग (kg)", unit: "टिन" },
+        { name: "शंकरभोग तेल (kg)", unit: "टिन" },
+        { name: "शंकरभोग तेल", unit: "टिन" },
+        { name: "शक्कर", unit: "बोरी" },
+        { name: "सेवई", unit: "नग" },
+        { name: "सरगम निरमा 1kg", unit: "नग" },
+        { name: "चुना रंग 10", unit: "नग" },
+        { name: "चुना रंग 20", unit: "नग" },
+        { name: "तारा जर्दा", unit: "पूड़ा" },
+        { name: "पेपर", unit: "KG" },
+        { name: "टकाटक हरा", unit: "पत्ता" }
+    ];
+
+    // LocalStorage se data load karna
+    let savedMaster = JSON.parse(localStorage.getItem('kirana_master_list_v2')) || masterItems;
+    let savedHistory = JSON.parse(localStorage.getItem('kirana_history_v2')) || [];
+
+    // Current Date Format
+    const options = { day: 'numeric', month: 'long', year: 'numeric' };
+    const formattedDate = new Date().toLocaleDateString('en-GB', options);
+
+    function initApp() {
+        document.getElementById('current-date').innerText = "Date: " + formattedDate;
+        renderHistoryList();
+    }
+
+    function goHome() {
+        document.getElementById('homeScreen').classList.add('active');
+        document.getElementById('entryScreen').classList.remove('active');
+        document.getElementById('viewScreen').classList.remove('active');
+        renderHistoryList();
+    }
+
+    function openNewEntry() {
+        document.getElementById('homeScreen').classList.remove('active');
+        document.getElementById('entryScreen').classList.add('active');
+        renderNewEntryTable();
+    }
+
+    function renderNewEntryTable() {
+        let tbody = document.getElementById('newItemTableBody');
+        tbody.innerHTML = "";
+        savedMaster.forEach((item, index) => {
+            let row = document.createElement('tr');
+            row.innerHTML = `
+                <td class="center"><input type="checkbox" id="chk_${index}" onchange="updateTotalCount()"></td>
+                <td class="center">${index + 1}</td>
+                <td>${item.name}</td>
+                <td class="center"><input type="number" id="qty_${index}" min="1" placeholder="0" oninput="updateTotalCount()"></td>
+                <td class="right">${item.unit}</td>
+            `;
+            tbody.appendChild(row);
+        });
+        updateTotalCount();
+    }
+
+    function addNewMasterItem() {
+        let nameInput = document.getElementById('newStoreItemName');
+        let unitSelect = document.getElementById('newStoreItemUnit');
+        let name = nameInput.value.trim();
+        let unit = unitSelect.value;
+
+        if (!name) {
+            alert("Kripya saman ka naam likhein!");
+            return;
+        }
+
+        savedMaster.push({ name: name, unit: unit });
+        localStorage.setItem('kirana_master_list_v2', JSON.stringify(savedMaster));
+        nameInput.value = "";
+        renderNewEntryTable();
+    }
+
+    function updateTotalCount() {
+        let count = 0;
+        savedMaster.forEach((item, index) => {
+            let chk = document.getElementById(`chk_${index}`);
+            if (chk && chk.checked) count++;
+        });
+        document.getElementById('total-items').innerText = "Total Items: " + count;
+    }
+
+    // Save and Export High Quality 9:16 JPG
+    function saveAndExportJPG() {
+        let selectedItems = [];
+        savedMaster.forEach((item, index) => {
+            let chk = document.getElementById(`chk_${index}`);
+            let qtyInput = document.getElementById(`qty_${index}`);
+            if (chk && chk.checked) {
+                let qty = qtyInput.value ? qtyInput.value : "1";
+                selectedItems.push({ name: item.name, qty: qty, unit: item.unit });
+            }
+        });
+
+        if (selectedItems.length === 0) {
+            alert("Kripya kam se kam ek saman select karein!");
+            return;
+        }
+
+        let newRecord = {
+            date: formattedDate,
+            items: selectedItems
+        };
+        savedHistory.unshift(newRecord);
+        localStorage.setItem('kirana_history_v2', JSON.stringify(savedHistory));
+
+        let captureElement = document.getElementById('capture-area');
+        html2canvas(captureElement, { scale: 3, useCORS: true }).then(canvas => {
+            let link = document.createElement('a');
+            link.download = 'Kirana_List_' + Date.now() + '.jpg';
+            link.href = canvas.toDataURL('image/jpeg', 1.0);
+            link.click();
+            goHome();
+        });
+    }
+
+    function renderHistoryList() {
+        let container = document.getElementById('historyListContainer');
+        if (savedHistory.length === 0) {
+            container.innerHTML = `<p style="color: #777; font-size: 13px;">Abhi tak koi list save nahi ki gayi hai.</p>`;
+            return;
+        }
+
+        container.innerHTML = "";
+        savedHistory.forEach((record, idx) => {
+            let card = document.createElement('div');
+            card.className = 'history-card';
+            card.innerHTML = `<strong>List #${savedHistory.length - idx}</strong><br>Date: ${record.date} | Items: ${record.items.length}`;
+            card.onclick = () => viewSavedList(idx);
+            container.appendChild(card);
+        });
+    }
+
+    function viewSavedList(index) {
+        let record = savedHistory[index];
+        document.getElementById('homeScreen').classList.remove('active');
+        document.getElementById('viewScreen').classList.add('active');
+
+        let viewArea = document.getElementById('view-capture-area');
+        let html = `
+            <div class="shop-header">
+                <h2 class="shop-title">Pravin Dhiver</h2>
+                <div class="shop-sub">Kilepar</div>
+                <div class="meta-bar">
+                    <span>Date: ${record.date}</span>
+                    <span>Total Items: ${record.items.length}</span>
+                </div>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 10%;" class="center">No.</th>
+                        <th style="width: 50%;">Name List</th>
+                        <th style="width: 25%;" class="center">Quantity</th>
+                        <th style="width: 15%;" class="right">Unit</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+
+        record.items.forEach((it, i) => {
+            html += `
+                <tr>
+                    <td class="center">${i + 1}</td>
+                    <td>${it.name}</td>
+                    <td class="center">${it.qty}</td>
+                    <td class="right">${it.unit}</td>
+                </tr>
+            `;
+        });
+
+        html += `</tbody></table>`;
+        viewArea.innerHTML = html;
+    }
+
+    initApp();
+</script>
+
+</body>
+</html>

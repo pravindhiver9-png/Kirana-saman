@@ -23,9 +23,10 @@ jobs:
           flutter-version: '3.19.x'
           channel: 'stable'
 
-      - name: Fix Gradle / Create Fresh Project Structure
+      - name: Fix Package Name and Create Project
         run: |
-          # Naya clean flutter project structure generate karke hamari files merge karna
+          # pubspec.yaml mein package name ko valid format mein fix karna
+          sed -i 's/name: .*/name: kirana_store_app/' pubspec.yaml
           flutter create . --platforms=android --org com.pravin.kirana
 
       - name: Install Dependencies

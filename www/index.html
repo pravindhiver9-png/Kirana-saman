@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="hi"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Saman List</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:"Noto Sans Devanagari",sans-serif;background:#f5f3f8;color:#222}
+header{background:#08558f;color:#fff;padding:16px;font-size:20px;font-weight:700}
+.btn{display:block;width:calc(100% - 32px);margin:16px;padding:16px;border:0;border-radius:12px;background:#08558f;color:#fff;font-size:18px;font-weight:700}
+.card{margin:8px 16px;padding:14px;background:#fff;border-radius:10px;display:flex;justify-content:space-between;box-shadow:0 1px 3px #0003}
+.row{display:flex;align-items:center;padding:10px 16px;border-bottom:1px solid #d5dce6;background:#fff}
+.row:nth-child(even){background:#e6eff7}
+.row label{flex:1;display:flex;align-items:center;gap:12px;font-size:18px}
+.row input[type=checkbox]{width:24px;height:24px}
+.row input[type=text]{width:70px;font-size:18px;padding:6px;text-align:right;visibility:hidden}
+.row.on input[type=text]{visibility:visible}
+.unit{width:64px;text-align:right;color:#08558f;font-weight:700}
+.bar{position:sticky;bottom:0;background:#f5f3f8;padding-bottom:4px}
+img{width:100%;display:block}
+#s{display:block;width:calc(100% - 32px);margin:10px 16px;padding:10px;font-size:17px;border:1px solid #9ab;border-radius:8px}
+</style></head><body>
+<div id="app"></div>
+<script>
+const SHOP="Pravin Dhiver", PLACE="Kilepar";
+const ITEMS=`आलू|KG
+प्याज|KG
+शक्कर|KG
+अरहर दाल|KG
+उड़द दाल|KG
+बेसन|KG
+सोयाबीन बड़ी|KG
+मटर चना|KG
+फल्लीदाना|KG
+अरहर दाल (हल्का)|KG
+उड़द दाल (हल्का)|KG
+सूजी|पैकेट
+रिलैक्स|पैकेट
+आटा|पैकेट
+मैदा|पैकेट
+डाबर आँवला तेल 20|पैकेट
+डाबर सरसों तेल 20|पैकेट
+जीरा 10|पैकेट
+कुरकुरे|पत्ता
+चिप्स|पत्ता
+टकाटक|पत्ता
+चॉकलेट वाला|पत्ता
+संसिल्क शैम्पू|पत्ता
+क्लिनिक प्लस|पत्ता
+मैगी|पत्ता
+चिकन मसाला 5|पत्ता
+चावमीन|पत्ता
+इलायची 5|पत्ता
+इलायची 10|पत्ता
+काजू 10|पत्ता
+पास्ता|पत्ता
+संसिल्क|पत्ता
+चिप्स हरा|पत्ता
+चिप्स लाल|पत्ता
+चिप्स नीला|पत्ता
+लाइफबॉय|नग
+एक्सपर्ट|नग
+संतूर|नग
+डेटॉल साबुन 10|नग
+कपिल साबुन|नग
+निरमा 20|नग
+निरमा 10|नग
+निरमा 50|नग
+क्लोजअप 10|नग
+सरसों तेल ½|नग
+सरसों तेल 200g|नग
+डालडा|नग
+गजब चाय 20|नग
+चायपत्ती 20|नग
+नारियल|नग
+सरगम 1kg|नग
+सरगम निरमा 10|नग
+अगरबत्ती सेंट वाला 10|नग
+आशिकी|पूड़ा
+गुड़ाखू|पूड़ा
+राजश्री|पूड़ा
+तारा|पूड़ा
+मिच्चर 5 वाला|पूड़ा
+चायपत्ती 10|पूड़ा
+हल्दी पाउडर 10|पूड़ा
+मिर्च पाउडर 10|पूड़ा
+धनिया पाउडर 10|पूड़ा
+हल्दी पाउडर 20|पूड़ा
+मिर्च पाउडर 20|पूड़ा
+धनिया पाउडर 20|पूड़ा
+क्रैक जैक 5|पूड़ा
+पतंजलि b5|पूड़ा
+पतंजलि b10|पूड़ा
+पारले जी|पूड़ा
+नारियल बिस्कुट|पूड़ा
+तम्बाकू|पूड़ा
+अन्नी ब्लैक|पूड़ा
+अन्नी कपरी|पूड़ा
+माचिस 5|पूड़ा
+माचिस|पूड़ा
+अगरबत्ती 10|पूड़ा
+क्रैक जैक|पूड़ा
+दन्तकांति 20|पूड़ा
+दन्तकांति 10|पूड़ा
+तेल 1 लीटर|पेटी
+तेल ½ लीटर|पेटी
+कपिल साबुन|पेटी
+तोष|पेटी
+बल्ब 60w|पेटी
+बल्ब|पेटी
+तेल (kg)|टिन
+शंकरभोग (kg)|टिन
+शंकरभोग तेल (kg)|टिन
+शंकरभोग तेल|टिन
+शक्कर|बोरी
+सेवई|नग
+सरगम निरमा 1kg|नग
+चुना रंग 10|नग
+चुना रंग 20|नग
+तारा जर्दा|पूड़ा
+पेपर|KG
+टकाटक हरा|पत्ता`.split("\n").map(l=>l.split("|"));
+const P=()=>window.Capacitor.Plugins, FS=()=>P().Filesystem;
+const $=s=>document.querySelector(s), app=$("#app");
+const hist=()=>JSON.parse(localStorage.getItem("hist")||"[]");
+function home(){
+  const h=hist();
+  app.innerHTML=`<header>${SHOP} – Saman List</header>
+  <button class="btn" id="new">+ New Entry</button>
+  ${h.map(x=>`<div class="card" data-id="${x.id}"><b>${x.date}</b><span>${x.count} items</span></div>`).join("")||'<p style="text-align:center;color:#888">Abhi koi list save nahi hai</p>'}`;
+  $("#new").onclick=entry;
+  document.querySelectorAll(".card").forEach(c=>c.onclick=()=>view(c.dataset.id));
+}
+async function view(id){
+  const r=await FS().readFile({path:`lists/${id}.jpg`,directory:"DATA"});
+  app.innerHTML=`<header>‹ Wapas</header><img src="data:image/jpeg;base64,${r.data}">`;
+  $("header").onclick=home;
+}
+function entry(){
+  app.innerHTML=`<header id="back">‹ Saman chuniye</header><input id="s" placeholder="Search...">`+ITEMS.map((it,i)=>
+   `<div class="row" id="r${i}"><label><input type="checkbox" data-i="${i}">${it[0]}</label>
+    <input type="text" inputmode="numeric" pattern="[0-9]*" id="q${i}" placeholder="0"><span class="unit">${it[1]}</span></div>`).join("")
+   +`<div class="bar"><button class="btn" id="exp">Export / Share</button></div>`;
+  $("#back").onclick=home;
+  document.querySelectorAll("input[type=checkbox]").forEach(c=>c.onchange=()=>{
+    $("#r"+c.dataset.i).classList.toggle("on",c.checked);if(c.checked)$("#q"+c.dataset.i).focus();});
+  document.querySelectorAll("input[type=text]").forEach(q=>q.id!="s"&&(q.oninput=()=>q.value=q.value.replace(/\D/g,"")));
+  $("#s").oninput=e=>{const q=e.target.value.trim().toLowerCase();ITEMS.forEach((it,i)=>$("#r"+i).style.display=it[0].toLowerCase().includes(q)?"":"none");};
+  $("#exp").onclick=exportList;
+}
+function draw(rows,dateStr){
+  const W=1080,H=1920,c=document.createElement("canvas");c.width=W;c.height=H;const g=c.getContext("2d");
+  const L=80,R=1000,HF='"Noto Sans Devanagari","Noto Sans",sans-serif';
+  g.fillStyle="#f5f3f8";g.fillRect(0,0,W,H);
+  g.fillStyle="#0b4f8f";g.textBaseline="alphabetic";g.textAlign="left";
+  g.font="italic bold 88px cursive";g.fillText(SHOP,L,150);
+  g.font="italic bold 38px cursive";g.fillText(PLACE,L,215);
+  g.fillRect(L,240,R-L,4);
+  g.fillStyle="#fff";g.fillRect(L,255,R-L,56);g.strokeStyle="#777";g.lineWidth=1.5;g.strokeRect(L,255,R-L,56);
+  g.fillStyle="#000";g.font="bold 32px Arial";g.fillText("Date:",L+20,293);g.fillText("Total Items :",650,293);
+  g.font="30px Arial";g.fillText(dateStr,L+145,294);g.fillText(String(rows.length),880,294);
+  g.fillStyle="#08558f";g.fillRect(L,330,R-L,100);
+  g.fillStyle="#fff";g.font="italic bold 56px cursive";
+  g.fillText("No.",L+25,400);g.fillText("Name List",L+130,400);
+  g.textAlign="right";g.fillText("Quantity",860,400);g.fillText("Unit",R-15,400);
+  const top=430,n=Math.max(30,rows.length),rh=(H-top-10)/n,fs=Math.min(40,rh*0.68);
+  for(let i=0;i<n;i++){
+    const y=top+i*rh;g.fillStyle=i%2?"#e6eff7":"#cfd8e6";g.fillRect(L,y,R-L,rh);
+    const r=rows[i];if(!r)continue;const by=y+rh*0.72;g.fillStyle="#111";
+    g.font=`${fs}px ${HF}`;g.textAlign="right";g.fillText(String(i+1),175,by);
+    g.textAlign="left";g.fillText(r.name,200,by);g.fillText("-",650,by);
+    g.textAlign="right";g.fillText(r.qty,860,by);
+    g.font=`bold ${fs}px ${HF}`;g.fillText(r.unit,R-15,by);
+  }
+  return c.toDataURL("image/jpeg",0.95).split(",")[1];
+}
+async function exportList(){
+  const rows=[];
+  document.querySelectorAll("input[type=checkbox]:checked").forEach(c=>{
+    const i=+c.dataset.i;rows.push({name:ITEMS[i][0],unit:ITEMS[i][1],qty:$("#q"+i).value||"-"});});
+  if(!rows.length){alert("Kam se kam ek saman tick kijiye");return;}
+  const d=new Date(),dateStr=d.toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"});
+  const b64=draw(rows,dateStr),id=Date.now();
+  try{
+    const f=await FS().writeFile({path:`share_${id}.jpg`,data:b64,directory:"CACHE"});
+    await P().Share.share({title:"Saman List",files:[f.uri]});
+    await FS().writeFile({path:`lists/${id}.jpg`,data:b64,directory:"DATA",recursive:true});
+    const h=hist();h.unshift({id,date:dateStr+" "+d.toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit"}),count:rows.length});
+    localStorage.setItem("hist",JSON.stringify(h));home();
+  }catch(e){if(!/cancel/i.test(String(e&&e.message||e)))alert("Error: "+e);}
+}
+home();
+</script></body></html>

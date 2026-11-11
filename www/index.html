@@ -1,29 +1,139 @@
+
 <!DOCTYPE html>
-<html lang="hi"><head><meta charset="utf-8">
+<html lang="hi">
+<head>
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Saman List</title>
+
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:"Noto Sans Devanagari",sans-serif;background:#f5f3f8;color:#222}
-header{background:#08558f;color:#fff;padding:16px;font-size:20px;font-weight:700}
-.btn{display:block;width:calc(100% - 32px);margin:16px;padding:16px;border:0;border-radius:12px;background:#08558f;color:#fff;font-size:18px;font-weight:700}
-.card{margin:8px 16px;padding:12px 14px;background:#fff;border-radius:10px;display:flex;align-items:center;gap:10px;box-shadow:0 1px 3px #0003}
-.card .info{flex:1;display:flex;flex-direction:column;gap:4px}
-.card .info small{color:#666;font-size:14px}
-.del{border:1px solid #c0392b;color:#c0392b;background:#fff;border-radius:8px;padding:8px 12px;font-size:15px}
-.row{display:flex;align-items:center;padding:10px 16px;border-bottom:1px solid #d5dce6;background:#fff}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:"Noto Sans Devanagari",sans-serif;
+  background:#f5f3f8;
+  color:#222
+}
+header{
+  background:#08558f;
+  color:#fff;
+  padding:16px;
+  font-size:20px;
+  font-weight:700
+}
+.btn{
+  display:block;
+  width:calc(100% - 32px);
+  margin:16px;
+  padding:16px;
+  border:0;
+  border-radius:12px;
+  background:#08558f;
+  color:#fff;
+  font-size:18px;
+  font-weight:700
+}
+.card{
+  margin:8px 16px;
+  padding:12px 14px;
+  background:#fff;
+  border-radius:10px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  box-shadow:0 1px 3px #0003
+}
+.card .info{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  gap:4px
+}
+.card .info small{
+  color:#666;
+  font-size:14px
+}
+.del{
+  border:1px solid #c0392b;
+  color:#c0392b;
+  background:#fff;
+  border-radius:8px;
+  padding:8px 12px;
+  font-size:15px
+}
+.row{
+  display:flex;
+  align-items:center;
+  padding:10px 16px;
+  border-bottom:1px solid #d5dce6;
+  background:#fff
+}
 .row:nth-child(even){background:#e6eff7}
-.row label{flex:1;display:flex;align-items:center;gap:12px;font-size:18px}
-.row input[type=checkbox]{width:24px;height:24px}
-.row input[type=text]{width:70px;font-size:18px;padding:6px;text-align:right;visibility:hidden}
+.row label{
+  flex:1;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  font-size:18px
+}
+.row input[type=checkbox]{
+  width:24px;
+  height:24px
+}
+.row input[type=text]{
+  width:70px;
+  font-size:18px;
+  padding:6px;
+  text-align:right;
+  visibility:hidden
+}
 .row.on input[type=text]{visibility:visible}
-.unit{width:64px;text-align:right;color:#08558f;font-weight:700}
-.bar{position:sticky;bottom:0;background:#f5f3f8;padding-bottom:4px}
-img{width:100%;display:block}
-#s{display:block;width:calc(100% - 32px);margin:10px 16px;padding:10px;font-size:17px;border:1px solid #9ab;border-radius:8px}
-</style></head><body>
+.unit{
+  width:64px;
+  text-align:right;
+  color:#08558f;
+  font-weight:700
+}
+.bar{
+  position:sticky;
+  bottom:0;
+  background:#f5f3f8;
+  padding-bottom:4px
+}
+img{
+  width:100%;
+  display:block
+}
+#s{
+  display:block;
+  width:calc(100% - 32px);
+  margin:10px 16px;
+  padding:10px;
+  font-size:17px;
+  border:1px solid #9ab;
+  border-radius:8px
+}
+.add-item{
+  display:block;
+  width:calc(100% - 32px);
+  margin:10px 16px;
+  padding:12px;
+  border:1px solid #08558f;
+  border-radius:10px;
+  background:#fff;
+  color:#08558f;
+  font-size:16px;
+  font-weight:700
+}
+</style>
+</head>
+
+<body>
 <div id="app"></div>
+
 <script>
 const SHOP="Pravin Dhiver", PLACE="Kilepar";
+
 const ITEMS=`आलू|KG
 प्याज|KG
 शक्कर|KG
@@ -120,84 +230,399 @@ const ITEMS=`आलू|KG
 चुना रंग 20|नग
 तारा जर्दा|पूड़ा
 पेपर|KG
-टकाटक हरा|पत्ता`.split("\n").map(l=>l.split("|"));
-const P=()=>window.Capacitor.Plugins, FS=()=>P().Filesystem;
-const $=s=>document.querySelector(s), app=$("#app");
+टकाटक हरा|पत्ता`
+.split("\n").map(l=>l.split("|"));
+
+// Permanent custom items
+function getCustomItems(){
+  try{
+    return JSON.parse(localStorage.getItem("customItems")||"[]");
+  }catch(e){
+    return [];
+  }
+}
+
+let ALL_ITEMS=[...ITEMS,...getCustomItems()];
+
+const P=()=>window.Capacitor.Plugins;
+const FS=()=>P().Filesystem;
+const $=s=>document.querySelector(s);
+const app=$("#app");
+
 const hist=()=>JSON.parse(localStorage.getItem("hist")||"[]");
+
+// HOME SCREEN
 function home(){
   const h=hist();
-  app.innerHTML=`<header>${SHOP} – Saman List</header>
+
+  app.innerHTML=`
+  <header>${SHOP} – Saman List</header>
   <button class="btn" id="new">+ New Entry</button>
-  ${h.map(x=>`<div class="card"><div class="info" data-id="${x.id}"><b>${x.date}</b><small>${x.count} items</small></div><button class="del" data-id="${x.id}">🗑 Delete</button></div>`).join("")||'<p style="text-align:center;color:#888">Abhi koi list save nahi hai</p>'}`;
+  ${h.map(x=>`
+    <div class="card">
+      <div class="info" data-id="${x.id}">
+        <b>${x.date}</b>
+        <small>${x.count} items</small>
+      </div>
+      <button class="del" data-id="${x.id}">🗑 Delete</button>
+    </div>
+  `).join("") ||
+  '<p style="text-align:center;color:#888">Abhi koi list save nahi hai</p>'}`;
+
   $("#new").onclick=entry;
-  document.querySelectorAll(".info").forEach(c=>c.onclick=()=>view(c.dataset.id));
-  document.querySelectorAll(".del").forEach(b=>b.onclick=()=>del(b.dataset.id));
+
+  document.querySelectorAll(".info").forEach(c=>{
+    c.onclick=()=>view(c.dataset.id);
+  });
+
+  document.querySelectorAll(".del").forEach(b=>{
+    b.onclick=()=>del(b.dataset.id);
+  });
 }
+
+// DELETE LIST
 async function del(id){
   if(!confirm("Is list ko delete karein?"))return;
-  try{await FS().deleteFile({path:`lists/${id}.jpg`,directory:"DATA"});}catch(e){}
-  localStorage.setItem("hist",JSON.stringify(hist().filter(x=>String(x.id)!==String(id))));
+
+  try{
+    await FS().deleteFile({
+      path:`lists/${id}.jpg`,
+      directory:"DATA"
+    });
+  }catch(e){}
+
+  localStorage.setItem(
+    "hist",
+    JSON.stringify(hist().filter(x=>String(x.id)!==String(id)))
+  );
+
   home();
 }
+
+// VIEW SAVED IMAGE
 async function view(id){
-  const r=await FS().readFile({path:`lists/${id}.jpg`,directory:"DATA"});
-  app.innerHTML=`<header>‹ Wapas</header><img src="data:image/jpeg;base64,${r.data}">`;
+  const r=await FS().readFile({
+    path:`lists/${id}.jpg`,
+    directory:"DATA"
+  });
+
+  app.innerHTML=`
+    <header id="back">‹ Wapas</header>
+    <img src="data:image/jpeg;base64,${r.data}">
+  `;
+
   $("header").onclick=home;
 }
+
+// ADD NEW PERMANENT ITEM
+function addItem(){
+
+  const name=prompt("Naye saman ka naam likhiye:");
+
+  if(!name || !name.trim())return;
+
+  const cleanName=name.trim();
+
+  if(ALL_ITEMS.some(x=>
+    x[0].toLowerCase()===cleanName.toLowerCase()
+  )){
+    alert("Ye saman pehle se list mein hai");
+    return;
+  }
+
+  const unit=prompt(
+    "Saman ki Unit likhiye:\nKG, नग, पैकेट, पत्ता, पूड़ा, पेटी, टिन",
+    "नग"
+  );
+
+  if(!unit || !unit.trim())return;
+
+  const item=[cleanName,unit.trim()];
+
+  const custom=getCustomItems();
+  custom.push(item);
+
+  localStorage.setItem(
+    "customItems",
+    JSON.stringify(custom)
+  );
+
+  ALL_ITEMS.push(item);
+
+  alert("Naya saman list mein jud gaya!");
+
+  entry();
+}
+
+// NEW ENTRY
 function entry(){
-  app.innerHTML=`<header id="back">‹ Saman chuniye</header><input id="s" placeholder="Search...">`+ITEMS.map((it,i)=>
-   `<div class="row" id="r${i}"><label><input type="checkbox" data-i="${i}">${it[0]}</label>
-    <input type="text" inputmode="numeric" pattern="[0-9]*" id="q${i}" placeholder="0"><span class="unit">${it[1]}</span></div>`).join("")
-   +`<div class="bar"><button class="btn" id="exp">Export / Share</button></div>`;
+
+  app.innerHTML=`
+    <header id="back">‹ Saman chuniye</header>
+
+    <input id="s" placeholder="Search...">
+
+    <button class="add-item" id="addItem">
+      ＋ सामान जोड़ें
+    </button>
+  `+
+  ALL_ITEMS.map((it,i)=>`
+    <div class="row" id="r${i}">
+      <label>
+        <input type="checkbox" data-i="${i}">
+        ${it[0]}
+      </label>
+
+      <input
+        type="text"
+        inputmode="numeric"
+        pattern="[0-9]*"
+        id="q${i}"
+        placeholder="0"
+      >
+
+      <span class="unit">${it[1]}</span>
+    </div>
+  `).join("")+
+  `
+    <div class="bar">
+      <button class="btn" id="exp">Export / Share</button>
+    </div>
+  `;
+
   $("#back").onclick=home;
-  document.querySelectorAll("input[type=checkbox]").forEach(c=>c.onchange=()=>{
-    $("#r"+c.dataset.i).classList.toggle("on",c.checked);if(c.checked)$("#q"+c.dataset.i).focus();});
-  document.querySelectorAll("input[type=text]").forEach(q=>q.id!="s"&&(q.oninput=()=>q.value=q.value.replace(/\D/g,"")));
-  $("#s").oninput=e=>{const q=e.target.value.trim().toLowerCase();ITEMS.forEach((it,i)=>$("#r"+i).style.display=it[0].toLowerCase().includes(q)?"":"none");};
+  $("#addItem").onclick=addItem;
+
+  // Checkbox selection
+  document.querySelectorAll('input[type="checkbox"]').forEach(c=>{
+    c.onchange=()=>{
+      $("#r"+c.dataset.i).classList.toggle("on",c.checked);
+
+      if(c.checked){
+        $("#q"+c.dataset.i).focus();
+      }
+    };
+  });
+
+  // Quantity: only numbers
+  document.querySelectorAll('input[type="text"]').forEach(q=>{
+    if(q.id!=="s"){
+      q.oninput=()=>{
+        q.value=q.value.replace(/\D/g,"");
+      };
+    }
+  });
+
+  // Search items
+  $("#s").oninput=e=>{
+    const q=e.target.value.trim().toLowerCase();
+
+    ALL_ITEMS.forEach((it,i)=>{
+      $("#r"+i).style.display=
+        it[0].toLowerCase().includes(q)?"":"none";
+    });
+  };
+
   $("#exp").onclick=exportList;
 }
+
+// DRAW IMAGE WITH AUTO HEIGHT
 function draw(rows,dateStr){
-  const W=1080,S=2262/W,H=4159/S,c=document.createElement("canvas");
-  c.width=2262;c.height=4159;const g=c.getContext("2d");g.scale(S,S);
-  const L=80,R=1000,HF='"Noto Sans Devanagari","Noto Sans",sans-serif';
+
+  const W=1080;
+  const S=2262/W;
+
+  const top=350;
+  const n=rows.length;
+  const rh=75;
+  const extraRows=3;
+
+  // Actual rows + 3 empty rows
+  const H=top+((n+extraRows)*rh)+10;
+
+  const c=document.createElement("canvas");
+  c.width=2262;
+  c.height=Math.ceil(H*S);
+
+  const g=c.getContext("2d");
+  g.scale(S,S);
+
+  const L=80,R=1000;
+
+  const HF='"Noto Sans Devanagari","Noto Sans",sans-serif';
   const SF='"Noto Serif",Georgia,"Times New Roman",serif';
-  g.fillStyle="#f5f3f8";g.fillRect(0,0,W,H);
-  g.fillStyle="#0b4f8f";g.textBaseline="alphabetic";g.textAlign="left";
-  g.font=`bold 84px ${SF}`;g.fillText(SHOP,L,120);
-  g.font=`bold 36px ${SF}`;g.fillText(PLACE,L,175);
+
+  // Background
+  g.fillStyle="#f5f3f8";
+  g.fillRect(0,0,W,H);
+
+  // Shop name
+  g.fillStyle="#0b4f8f";
+  g.textBaseline="alphabetic";
+  g.textAlign="left";
+
+  g.font=`bold 84px ${SF}`;
+  g.fillText(SHOP,L,120);
+
+  g.font=`bold 36px ${SF}`;
+  g.fillText(PLACE,L,175);
+
   g.fillRect(L,195,R-L,4);
-  g.fillStyle="#fff";g.fillRect(L,212,R-L,52);g.strokeStyle="#777";g.lineWidth=1.5;g.strokeRect(L,212,R-L,52);
-  g.fillStyle="#000";g.font=`bold 30px ${SF}`;g.fillText("Date:",L+20,247);g.fillText("Total Items :",650,247);
-  g.font=`30px ${SF}`;g.fillText(dateStr,L+135,247);g.fillText(String(rows.length),880,247);
-  g.fillStyle="#08558f";g.fillRect(L,280,R-L,70);
-  g.fillStyle="#fff";g.font=`bold 44px ${SF}`;
-  g.fillText("No.",L+25,328);g.fillText("Name List",L+130,328);
-  g.textAlign="right";g.fillText("Quantity",860,328);g.fillText("Unit",R-15,328);
-  const top=350,n=Math.max(40,rows.length),rh=(H-top-10)/n,fs=Math.min(40,rh*0.68);
-  for(let i=0;i<n;i++){
-    const y=top+i*rh;g.fillStyle=i%2?"#e6eff7":"#cfd8e6";g.fillRect(L,y,R-L,rh);
-    const r=rows[i];if(!r)continue;const by=y+rh*0.72;g.fillStyle="#111";
-    g.font=`${fs}px ${HF}`;g.textAlign="right";g.fillText(String(i+1),175,by);
-    g.textAlign="left";g.fillText(r.name,200,by,440);g.fillText("-",650,by);
-    g.textAlign="right";g.fillText(r.qty,860,by);
-    g.font=`bold ${fs}px ${HF}`;g.fillText(r.unit,R-15,by);
+
+  // Date and total
+  g.fillStyle="#fff";
+  g.fillRect(L,212,R-L,52);
+
+  g.strokeStyle="#777";
+  g.lineWidth=1.5;
+  g.strokeRect(L,212,R-L,52);
+
+  g.fillStyle="#000";
+  g.font=`bold 30px ${SF}`;
+
+  g.fillText("Date:",L+20,247);
+  g.fillText("Total Items :",650,247);
+
+  g.font=`30px ${SF}`;
+  g.fillText(dateStr,L+135,247);
+  g.fillText(String(rows.length),880,247);
+
+  // Table heading - original size, normal weight
+  g.fillStyle="#08558f";
+  g.fillRect(L,280,R-L,70);
+
+  g.fillStyle="#fff";
+  g.font=`44px ${SF}`;
+
+  g.fillText("No.",L+25,328);
+  g.fillText("Name List",L+130,328);
+
+  g.textAlign="right";
+  g.fillText("Quantity",860,328);
+  g.fillText("Unit",R-15,328);
+
+  // List rows + 3 extra empty rows
+  const fs=40;
+  const listFs=44;
+  const totalRows=n+extraRows;
+
+  for(let i=0;i<totalRows;i++){
+
+    const y=top+i*rh;
+    const by=y+rh*0.72;
+
+    g.fillStyle=i%2?"#e6eff7":"#cfd8e6";
+    g.fillRect(L,y,R-L,rh);
+
+    const r=rows[i];
+
+    if(!r)continue;
+
+    g.fillStyle="#111";
+
+    // Serial number - bold and bigger
+    g.font=`bold ${listFs}px ${HF}`;
+    g.textAlign="right";
+    g.fillText(String(i+1),175,by);
+
+    // Item name - bold and bigger
+    g.font=`bold ${listFs}px ${HF}`;
+    g.textAlign="left";
+    g.fillText(r.name,200,by,440);
+
+    // Dash - normal
+    g.font=`${fs}px ${HF}`;
+    g.fillText("-",650,by);
+
+    // Quantity - normal
+    g.textAlign="right";
+    g.fillText(r.qty,860,by);
+
+    // Unit - same as original bold style
+    g.font=`bold ${fs}px ${HF}`;
+    g.fillText(r.unit,R-15,by);
   }
+
   return c.toDataURL("image/jpeg",0.98).split(",")[1];
 }
+
+// EXPORT / SHARE
 async function exportList(){
+
   const rows=[];
-  document.querySelectorAll("input[type=checkbox]:checked").forEach(c=>{
-    const i=+c.dataset.i;rows.push({name:ITEMS[i][0],unit:ITEMS[i][1],qty:$("#q"+i).value||"-"});});
-  if(!rows.length){alert("Kam se kam ek saman tick kijiye");return;}
-  const d=new Date(),dateStr=d.toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"});
-  const b64=draw(rows,dateStr),id=Date.now();
+
+  document.querySelectorAll('input[type="checkbox"]:checked').forEach(c=>{
+
+    const i=+c.dataset.i;
+
+    rows.push({
+      name:ALL_ITEMS[i][0],
+      unit:ALL_ITEMS[i][1],
+      qty:$("#q"+i).value||"-"
+    });
+  });
+
+  if(!rows.length){
+    alert("Kam se kam ek saman tick kijiye");
+    return;
+  }
+
+  const d=new Date();
+
+  const dateStr=d.toLocaleDateString("en-GB",{
+    day:"numeric",
+    month:"long",
+    year:"numeric"
+  });
+
+  const b64=draw(rows,dateStr);
+  const id=Date.now();
+
   try{
-    const f=await FS().writeFile({path:`share_${id}.jpg`,data:b64,directory:"CACHE"});
-    await P().Share.share({title:"Saman List",files:[f.uri]});
-    await FS().writeFile({path:`lists/${id}.jpg`,data:b64,directory:"DATA",recursive:true});
-    const h=hist();h.unshift({id,date:dateStr+" "+d.toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit"}),count:rows.length});
-    localStorage.setItem("hist",JSON.stringify(h));home();
-  }catch(e){if(!/cancel/i.test(String(e&&e.message||e)))alert("Error: "+e);}
+
+    const f=await FS().writeFile({
+      path:`share_${id}.jpg`,
+      data:b64,
+      directory:"CACHE"
+    });
+
+    await P().Share.share({
+      title:"Saman List",
+      files:[f.uri]
+    });
+
+    await FS().writeFile({
+      path:`lists/${id}.jpg`,
+      data:b64,
+      directory:"DATA",
+      recursive:true
+    });
+
+    const h=hist();
+
+    h.unshift({
+      id,
+      date:dateStr+" "+d.toLocaleTimeString("en-GB",{
+        hour:"2-digit",
+        minute:"2-digit"
+      }),
+      count:rows.length
+    });
+
+    localStorage.setItem("hist",JSON.stringify(h));
+
+    home();
+
+  }catch(e){
+
+    if(!/cancel/i.test(String(e&&e.message||e))){
+      alert("Error: "+e);
+    }
+  }
 }
+
 home();
-</script></body></html>
+
+</script>
+</body>
+</html>

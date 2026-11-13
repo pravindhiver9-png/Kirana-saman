@@ -108,10 +108,15 @@ img{
   display:block;
   width:calc(100% - 32px);
   margin:10px 16px;
-  padding:10px;
+  padding:12px;
   font-size:17px;
   border:1px solid #9ab;
-  border-radius:8px
+  border-radius:8px;
+  outline:none
+}
+#s:focus{
+  border-color:#08558f;
+  box-shadow:0 0 0 2px #08558f22
 }
 .add-item{
   display:block;
@@ -125,6 +130,11 @@ img{
   font-size:16px;
   font-weight:700
 }
+.empty-search{
+  text-align:center;
+  color:#888;
+  padding:25px 10px
+}
 </style>
 </head>
 
@@ -132,7 +142,9 @@ img{
 <div id="app"></div>
 
 <script>
-const SHOP="Pravin Dhiver", PLACE="Kilepar";
+
+const SHOP="Pravin Dhiver";
+const PLACE="Kilepar";
 
 const ITEMS=`आलू|KG
 प्याज|KG
@@ -233,10 +245,20 @@ const ITEMS=`आलू|KG
 टकाटक हरा|पत्ता`
 .split("\n").map(l=>l.split("|"));
 
-// Permanent custom items
+
+// ======================================
+// CUSTOM ITEMS - PERMANENT STORAGE
+// ======================================
+
 function getCustomItems(){
   try{
-    return JSON.parse(localStorage.getItem("customItems")||"[]");
+    const data=JSON.parse(
+      localStorage.getItem("customItems")||"[]"
+    );
+
+    return Array.isArray(data)?data.filter(
+      x=>Array.isArray(x)&&x.length>=2
+    ):[];
   }catch(e){
     return [];
   }
@@ -249,25 +271,207 @@ const FS=()=>P().Filesystem;
 const $=s=>document.querySelector(s);
 const app=$("#app");
 
-const hist=()=>JSON.parse(localStorage.getItem("hist")||"[]");
+const hist=()=>JSON.parse(
+  localStorage.getItem("hist")||"[]"
+);
 
+
+// ======================================
+// HTML SAFE TEXT
+// ======================================
+
+function safeText(value){
+  return String(value).replace(/[&<>"']/g,ch=>({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
+  })[ch]);
+}
+
+
+// ======================================
+// HINDI TO ENGLISH ROMAN CONVERSION
+// ======================================
+
+const consonants={
+  "क":"k","ख":"kh","ग":"g","घ":"gh","ङ":"ng",
+  "च":"ch","छ":"chh","ज":"j","झ":"jh","ञ":"ny",
+  "ट":"t","ठ":"th","ड":"d","ढ":"dh","ण":"n",
+  "त":"t","थ":"th","द":"d","ध":"dh","न":"n",
+  "प":"p","फ":"ph","ब":"b","भ":"bh","म":"m",
+  "य":"y","र":"r","ल":"l","व":"v",
+  "श":"sh","ष":"sh","स":"s","ह":"h",
+  "क्ष":"ksh","त्र":"tr","ज्ञ":"gy"
+};
+
+const vowels={
+  "अ":"a","आ":"aa","इ":"i","ई":"ee",
+  "उ":"u","ऊ":"oo","ऋ":"ri","ए":"e",
+  "ऐ":"ai","ओ":"o","औ":"au"
+};
+
+const matras={
+  "ा":"aa","ि":"i","ी":"ee","ु":"u",
+  "ू":"oo","ृ":"ri","े":"e","ै":"ai",
+  "ो":"o","ौ":"au"
+};
+
+function romanizeHindi(value){
+
+  const chars=Array.from(value);
+  let result="";
+
+  for(let i=0;i<chars.length;i++){
+
+    const ch=chars[i];
+
+    // Independent vowels
+    if(vowels[ch]){
+      result+=vowels[ch];
+      continue;
+    }
+
+    // Consonants
+    if(consonants[ch]){
+
+      result+=consonants[ch];
+
+      // Virama: no inherent vowel
+      if(chars[i+1]==="्"){
+        i++;
+        continue;
+      }
+
+      // Matra
+      if(matras[chars[i+1]]){
+        result+=matras[chars[i+1]];
+        i++;
+      }else{
+        result+="a";
+      }
+
+      continue;
+    }
+
+    // Matras
+    if(matras[ch]){
+      result+=matras[ch];
+      continue;
+    }
+
+    // Anusvara and chandrabindu
+    if(ch==="ं"||ch==="ँ"){
+      result+="n";
+      continue;
+    }
+
+    if(ch==="ः"){
+      result+="h";
+      continue;
+    }
+
+    if(ch==="़"||ch==="्"){
+      continue;
+    }
+
+    result+=ch;
+  }
+
+  return result.toLowerCase();
+}
+
+
+// ======================================
+// SEARCH NORMALIZATION
+// ======================================
+
+function normalizeRoman(value){
+
+  return value
+    .toLowerCase()
+    .replace(/aa/g,"a")
+    .replace(/ee/g,"i")
+    .replace(/ii/g,"i")
+    .replace(/oo/g,"u")
+    .replace(/uu/g,"u")
+    .replace(/[^a-z0-9]/g,"");
+}
+
+
+// ======================================
+// LIVE SEARCH
+// ======================================
+
+function searchItems(value){
+
+  const q=value.trim().toLowerCase();
+
+  if(!q){
+    return ALL_ITEMS.map((item,i)=>i);
+  }
+
+  const romanQuery=normalizeRoman(q);
+
+  const results=[];
+
+  ALL_ITEMS.forEach((item,i)=>{
+
+    const hindiName=item[0].toLowerCase();
+    const englishName=romanizeHindi(item[0]);
+
+    const normalizedName=normalizeRoman(englishName);
+
+    const directMatch=hindiName.includes(q);
+
+    const romanMatch=
+      englishName.includes(q.replace(/\s+/g,"")) ||
+      normalizedName.includes(romanQuery);
+
+    const unitMatch=item[1].toLowerCase().includes(q);
+
+    if(directMatch||romanMatch||unitMatch){
+      results.push(i);
+    }
+  });
+
+  return results;
+}
+
+
+// ======================================
 // HOME SCREEN
+// ======================================
+
 function home(){
+
   const h=hist();
 
   app.innerHTML=`
-  <header>${SHOP} – Saman List</header>
-  <button class="btn" id="new">+ New Entry</button>
-  ${h.map(x=>`
-    <div class="card">
-      <div class="info" data-id="${x.id}">
-        <b>${x.date}</b>
-        <small>${x.count} items</small>
-      </div>
-      <button class="del" data-id="${x.id}">🗑 Delete</button>
-    </div>
-  `).join("") ||
-  '<p style="text-align:center;color:#888">Abhi koi list save nahi hai</p>'}`;
+    <header>${SHOP} – Saman List</header>
+
+    <button class="btn" id="new">
+      + New Entry
+    </button>
+
+    ${
+      h.map(x=>`
+        <div class="card">
+          <div class="info" data-id="${x.id}">
+            <b>${safeText(x.date)}</b>
+            <small>${x.count} items</small>
+          </div>
+
+          <button class="del" data-id="${x.id}">
+            🗑 Delete
+          </button>
+        </div>
+      `).join("")
+      ||
+      '<p style="text-align:center;color:#888">Abhi koi list save nahi hai</p>'
+    }
+  `;
 
   $("#new").onclick=entry;
 
@@ -280,8 +484,13 @@ function home(){
   });
 }
 
-// DELETE LIST
+
+// ======================================
+// DELETE SAVED LIST
+// ======================================
+
 async function del(id){
+
   if(!confirm("Is list ko delete karein?"))return;
 
   try{
@@ -293,39 +502,59 @@ async function del(id){
 
   localStorage.setItem(
     "hist",
-    JSON.stringify(hist().filter(x=>String(x.id)!==String(id)))
+    JSON.stringify(
+      hist().filter(x=>String(x.id)!==String(id))
+    )
   );
 
   home();
 }
 
+
+// ======================================
 // VIEW SAVED IMAGE
+// ======================================
+
 async function view(id){
-  const r=await FS().readFile({
-    path:`lists/${id}.jpg`,
-    directory:"DATA"
-  });
 
-  app.innerHTML=`
-    <header id="back">‹ Wapas</header>
-    <img src="data:image/jpeg;base64,${r.data}">
-  `;
+  try{
 
-  $("header").onclick=home;
+    const r=await FS().readFile({
+      path:`lists/${id}.jpg`,
+      directory:"DATA"
+    });
+
+    app.innerHTML=`
+      <header id="back">‹ Wapas</header>
+      <img src="data:image/jpeg;base64,${r.data}">
+    `;
+
+    $("header").onclick=home;
+
+  }catch(e){
+    alert("Image open nahi ho payi: "+e);
+    home();
+  }
 }
 
-// ADD NEW PERMANENT ITEM
+
+// ======================================
+// ADD NEW ITEM
+// ======================================
+
 function addItem(){
 
   const name=prompt("Naye saman ka naam likhiye:");
 
-  if(!name || !name.trim())return;
+  if(!name||!name.trim())return;
 
   const cleanName=name.trim();
 
-  if(ALL_ITEMS.some(x=>
-    x[0].toLowerCase()===cleanName.toLowerCase()
-  )){
+  const exists=ALL_ITEMS.some(
+    x=>x[0].toLowerCase()===cleanName.toLowerCase()
+  );
+
+  if(exists){
     alert("Ye saman pehle se list mein hai");
     return;
   }
@@ -335,98 +564,161 @@ function addItem(){
     "नग"
   );
 
-  if(!unit || !unit.trim())return;
+  if(!unit||!unit.trim())return;
 
   const item=[cleanName,unit.trim()];
 
   const custom=getCustomItems();
+
   custom.push(item);
 
-  localStorage.setItem(
-    "customItems",
-    JSON.stringify(custom)
-  );
+  try{
 
-  ALL_ITEMS.push(item);
+    localStorage.setItem(
+      "customItems",
+      JSON.stringify(custom)
+    );
 
-  alert("Naya saman list mein jud gaya!");
+    ALL_ITEMS.push(item);
 
-  entry();
+    alert("Naya saman list mein jud gaya!");
+
+    entry();
+
+  }catch(e){
+    alert("Saman save nahi ho paya: "+e);
+  }
 }
 
-// NEW ENTRY
-function entry(){
 
-  app.innerHTML=`
-    <header id="back">‹ Saman chuniye</header>
+// ======================================
+// RENDER ITEM ROWS
+// ======================================
 
-    <input id="s" placeholder="Search...">
+function renderRows(indices){
 
-    <button class="add-item" id="addItem">
-      ＋ सामान जोड़ें
-    </button>
-  `+
-  ALL_ITEMS.map((it,i)=>`
-    <div class="row" id="r${i}">
-      <label>
-        <input type="checkbox" data-i="${i}">
-        ${it[0]}
-      </label>
+  const container=$("#itemList");
 
-      <input
-        type="text"
-        inputmode="numeric"
-        pattern="[0-9]*"
-        id="q${i}"
-        placeholder="0"
-      >
+  if(!indices.length){
 
-      <span class="unit">${it[1]}</span>
-    </div>
-  `).join("")+
-  `
-    <div class="bar">
-      <button class="btn" id="exp">Export / Share</button>
-    </div>
-  `;
+    container.innerHTML=`
+      <div class="empty-search">
+        Koi saman nahi mila
+      </div>
+    `;
 
-  $("#back").onclick=home;
-  $("#addItem").onclick=addItem;
+    return;
+  }
 
-  // Checkbox selection
-  document.querySelectorAll('input[type="checkbox"]').forEach(c=>{
+  container.innerHTML=indices.map(i=>{
+
+    const it=ALL_ITEMS[i];
+
+    return `
+      <div class="row" id="r${i}">
+
+        <label>
+          <input type="checkbox" data-i="${i}">
+          ${safeText(it[0])}
+        </label>
+
+        <input
+          type="text"
+          inputmode="numeric"
+          pattern="[0-9]*"
+          id="q${i}"
+          placeholder="0"
+        >
+
+        <span class="unit">
+          ${safeText(it[1])}
+        </span>
+
+      </div>
+    `;
+
+  }).join("");
+
+  // Checkbox events
+  container.querySelectorAll('input[type="checkbox"]').forEach(c=>{
+
     c.onchange=()=>{
+
       $("#r"+c.dataset.i).classList.toggle("on",c.checked);
 
       if(c.checked){
         $("#q"+c.dataset.i).focus();
       }
     };
+
   });
 
-  // Quantity: only numbers
-  document.querySelectorAll('input[type="text"]').forEach(q=>{
-    if(q.id!=="s"){
-      q.oninput=()=>{
-        q.value=q.value.replace(/\D/g,"");
-      };
-    }
-  });
+  // Quantity events
+  container.querySelectorAll('input[type="text"]').forEach(q=>{
 
-  // Search items
+    q.oninput=()=>{
+      q.value=q.value.replace(/\D/g,"");
+    };
+
+  });
+}
+
+
+// ======================================
+// NEW ENTRY
+// ======================================
+
+function entry(){
+
+  app.innerHTML=`
+
+    <header id="back">‹ Saman chuniye</header>
+
+    <input
+      id="s"
+      type="search"
+      placeholder="Search... जैसे Aa, Py, Sha, Mag"
+      autocomplete="off"
+    >
+
+    <button class="add-item" id="addItem">
+      ＋ सामान जोड़ें
+    </button>
+
+    <div id="itemList"></div>
+
+    <div class="bar">
+      <button class="btn" id="exp">
+        Export / Share
+      </button>
+    </div>
+
+  `;
+
+  $("#back").onclick=home;
+
+  $("#addItem").onclick=addItem;
+
+  // Show all items initially
+  renderRows(ALL_ITEMS.map((item,i)=>i));
+
+  // LIVE SEARCH
   $("#s").oninput=e=>{
-    const q=e.target.value.trim().toLowerCase();
 
-    ALL_ITEMS.forEach((it,i)=>{
-      $("#r"+i).style.display=
-        it[0].toLowerCase().includes(q)?"":"none";
-    });
+    const results=searchItems(e.target.value);
+
+    renderRows(results);
+
   };
 
   $("#exp").onclick=exportList;
 }
 
-// DRAW IMAGE WITH AUTO HEIGHT
+
+// ======================================
+// DRAW IMAGE - AUTO ADJUSTABLE HEIGHT
+// ======================================
+
 function draw(rows,dateStr){
 
   const W=1080;
@@ -437,17 +729,20 @@ function draw(rows,dateStr){
   const rh=75;
   const extraRows=3;
 
-  // Actual rows + 3 empty rows
+  // Actual rows + 3 extra empty rows
   const H=top+((n+extraRows)*rh)+10;
 
   const c=document.createElement("canvas");
+
   c.width=2262;
   c.height=Math.ceil(H*S);
 
   const g=c.getContext("2d");
+
   g.scale(S,S);
 
-  const L=80,R=1000;
+  const L=80;
+  const R=1000;
 
   const HF='"Noto Sans Devanagari","Noto Sans",sans-serif';
   const SF='"Noto Serif",Georgia,"Times New Roman",serif';
@@ -469,7 +764,7 @@ function draw(rows,dateStr){
 
   g.fillRect(L,195,R-L,4);
 
-  // Date and total
+  // Date box
   g.fillStyle="#fff";
   g.fillRect(L,212,R-L,52);
 
@@ -484,26 +779,31 @@ function draw(rows,dateStr){
   g.fillText("Total Items :",650,247);
 
   g.font=`30px ${SF}`;
+
   g.fillText(dateStr,L+135,247);
   g.fillText(String(rows.length),880,247);
 
-  // Table heading - original size, normal weight
+  // TABLE HEADING
+  // Normal weight - not bold
   g.fillStyle="#08558f";
   g.fillRect(L,280,R-L,70);
 
   g.fillStyle="#fff";
   g.font=`44px ${SF}`;
+  g.textAlign="left";
 
   g.fillText("No.",L+25,328);
   g.fillText("Name List",L+130,328);
 
   g.textAlign="right";
+
   g.fillText("Quantity",860,328);
   g.fillText("Unit",R-15,328);
 
-  // List rows + 3 extra empty rows
+  // List rows
   const fs=40;
   const listFs=44;
+
   const totalRows=n+extraRows;
 
   for(let i=0;i<totalRows;i++){
@@ -511,6 +811,7 @@ function draw(rows,dateStr){
     const y=top+i*rh;
     const by=y+rh*0.72;
 
+    // Alternate row background
     g.fillStyle=i%2?"#e6eff7":"#cfd8e6";
     g.fillRect(L,y,R-L,rh);
 
@@ -520,38 +821,47 @@ function draw(rows,dateStr){
 
     g.fillStyle="#111";
 
-    // Serial number - bold and bigger
+    // Serial number - BOLD and bigger
     g.font=`bold ${listFs}px ${HF}`;
     g.textAlign="right";
+
     g.fillText(String(i+1),175,by);
 
-    // Item name - bold and bigger
+    // Item name - BOLD and bigger
     g.font=`bold ${listFs}px ${HF}`;
     g.textAlign="left";
+
     g.fillText(r.name,200,by,440);
 
-    // Dash - normal
+    // Dash
     g.font=`${fs}px ${HF}`;
     g.fillText("-",650,by);
 
-    // Quantity - normal
+    // Quantity
     g.textAlign="right";
     g.fillText(r.qty,860,by);
 
-    // Unit - same as original bold style
+    // Unit
     g.font=`bold ${fs}px ${HF}`;
     g.fillText(r.unit,R-15,by);
+
   }
 
   return c.toDataURL("image/jpeg",0.98).split(",")[1];
 }
 
+
+// ======================================
 // EXPORT / SHARE
+// ======================================
+
 async function exportList(){
 
   const rows=[];
 
-  document.querySelectorAll('input[type="checkbox"]:checked').forEach(c=>{
+  document.querySelectorAll(
+    'input[type="checkbox"]:checked'
+  ).forEach(c=>{
 
     const i=+c.dataset.i;
 
@@ -560,6 +870,7 @@ async function exportList(){
       unit:ALL_ITEMS[i][1],
       qty:$("#q"+i).value||"-"
     });
+
   });
 
   if(!rows.length){
@@ -576,6 +887,7 @@ async function exportList(){
   });
 
   const b64=draw(rows,dateStr);
+
   const id=Date.now();
 
   try{
@@ -609,7 +921,10 @@ async function exportList(){
       count:rows.length
     });
 
-    localStorage.setItem("hist",JSON.stringify(h));
+    localStorage.setItem(
+      "hist",
+      JSON.stringify(h)
+    );
 
     home();
 
@@ -618,8 +933,14 @@ async function exportList(){
     if(!/cancel/i.test(String(e&&e.message||e))){
       alert("Error: "+e);
     }
+
   }
 }
+
+
+// ======================================
+// START APP
+// ======================================
 
 home();
 

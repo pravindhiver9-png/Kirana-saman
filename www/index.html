@@ -146,6 +146,11 @@ img{
 const SHOP="Pravin Dhiver";
 const PLACE="Kilepar";
 
+
+// ======================================
+// DEFAULT ITEMS
+// ======================================
+
 const ITEMS=`आलू|KG
 प्याज|KG
 शक्कर|KG
@@ -247,7 +252,7 @@ const ITEMS=`आलू|KG
 
 
 // ======================================
-// CUSTOM ITEMS - PERMANENT STORAGE
+// CUSTOM ITEMS STORAGE
 // ======================================
 
 function getCustomItems(){
@@ -256,15 +261,25 @@ function getCustomItems(){
       localStorage.getItem("customItems")||"[]"
     );
 
-    return Array.isArray(data)?data.filter(
-      x=>Array.isArray(x)&&x.length>=2
-    ):[];
+    return Array.isArray(data)
+      ?data.filter(x=>Array.isArray(x)&&x.length>=2)
+      :[];
+
   }catch(e){
     return [];
   }
 }
 
 let ALL_ITEMS=[...ITEMS,...getCustomItems()];
+
+
+// ======================================
+// SELECTED ITEMS STORAGE
+// ======================================
+
+// Search बदलने पर भी Tick और Quantity सुरक्षित
+let selectedItems={};
+
 
 const P=()=>window.Capacitor.Plugins;
 const FS=()=>P().Filesystem;
@@ -277,7 +292,7 @@ const hist=()=>JSON.parse(
 
 
 // ======================================
-// HTML SAFE TEXT
+// SAFE TEXT
 // ======================================
 
 function safeText(value){
@@ -292,7 +307,7 @@ function safeText(value){
 
 
 // ======================================
-// HINDI TO ENGLISH ROMAN CONVERSION
+// HINDI TO ROMAN CONVERSION
 // ======================================
 
 const consonants={
@@ -302,8 +317,7 @@ const consonants={
   "त":"t","थ":"th","द":"d","ध":"dh","न":"n",
   "प":"p","फ":"ph","ब":"b","भ":"bh","म":"m",
   "य":"y","र":"r","ल":"l","व":"v",
-  "श":"sh","ष":"sh","स":"s","ह":"h",
-  "क्ष":"ksh","त्र":"tr","ज्ञ":"gy"
+  "श":"sh","ष":"sh","स":"s","ह":"h"
 };
 
 const vowels={
@@ -327,24 +341,20 @@ function romanizeHindi(value){
 
     const ch=chars[i];
 
-    // Independent vowels
     if(vowels[ch]){
       result+=vowels[ch];
       continue;
     }
 
-    // Consonants
     if(consonants[ch]){
 
       result+=consonants[ch];
 
-      // Virama: no inherent vowel
       if(chars[i+1]==="्"){
         i++;
         continue;
       }
 
-      // Matra
       if(matras[chars[i+1]]){
         result+=matras[chars[i+1]];
         i++;
@@ -355,13 +365,11 @@ function romanizeHindi(value){
       continue;
     }
 
-    // Matras
     if(matras[ch]){
       result+=matras[ch];
       continue;
     }
 
-    // Anusvara and chandrabindu
     if(ch==="ं"||ch==="ँ"){
       result+="n";
       continue;
@@ -413,14 +421,12 @@ function searchItems(value){
   }
 
   const romanQuery=normalizeRoman(q);
-
   const results=[];
 
   ALL_ITEMS.forEach((item,i)=>{
 
     const hindiName=item[0].toLowerCase();
     const englishName=romanizeHindi(item[0]);
-
     const normalizedName=normalizeRoman(englishName);
 
     const directMatch=hindiName.includes(q);
@@ -434,6 +440,7 @@ function searchItems(value){
     if(directMatch||romanMatch||unitMatch){
       results.push(i);
     }
+
   });
 
   return results;
@@ -458,6 +465,7 @@ function home(){
     ${
       h.map(x=>`
         <div class="card">
+
           <div class="info" data-id="${x.id}">
             <b>${safeText(x.date)}</b>
             <small>${x.count} items</small>
@@ -466,6 +474,7 @@ function home(){
           <button class="del" data-id="${x.id}">
             🗑 Delete
           </button>
+
         </div>
       `).join("")
       ||
@@ -486,7 +495,7 @@ function home(){
 
 
 // ======================================
-// DELETE SAVED LIST
+// DELETE LIST
 // ======================================
 
 async function del(id){
@@ -494,10 +503,12 @@ async function del(id){
   if(!confirm("Is list ko delete karein?"))return;
 
   try{
+
     await FS().deleteFile({
       path:`lists/${id}.jpg`,
       directory:"DATA"
     });
+
   }catch(e){}
 
   localStorage.setItem(
@@ -532,8 +543,10 @@ async function view(id){
     $("header").onclick=home;
 
   }catch(e){
+
     alert("Image open nahi ho payi: "+e);
     home();
+
   }
 }
 
@@ -583,16 +596,19 @@ function addItem(){
 
     alert("Naya saman list mein jud gaya!");
 
+    // Search reset, existing selections remain
     entry();
 
   }catch(e){
+
     alert("Saman save nahi ho paya: "+e);
+
   }
 }
 
 
 // ======================================
-// RENDER ITEM ROWS
+// RENDER ROWS - SELECTION PRESERVED
 // ======================================
 
 function renderRows(indices){
@@ -639,28 +655,63 @@ function renderRows(indices){
 
   }).join("");
 
-  // Checkbox events
-  container.querySelectorAll('input[type="checkbox"]').forEach(c=>{
 
-    c.onchange=()=>{
+  // Restore checkbox and quantity
+  indices.forEach(i=>{
 
-      $("#r"+c.dataset.i).classList.toggle("on",c.checked);
+    const checkbox=$(`#r${i} input[type="checkbox"]`);
+    const quantity=$("#q"+i);
 
-      if(c.checked){
-        $("#q"+c.dataset.i).focus();
+    if(selectedItems[i]){
+
+      checkbox.checked=true;
+
+      $("#r"+i).classList.add("on");
+
+      quantity.value=selectedItems[i].qty;
+
+    }
+
+
+    // Checkbox change
+    checkbox.onchange=()=>{
+
+      if(checkbox.checked){
+
+        selectedItems[i]={
+          qty:quantity.value
+        };
+
+        $("#r"+i).classList.add("on");
+
+        quantity.focus();
+
+      }else{
+
+        delete selectedItems[i];
+
+        $("#r"+i).classList.remove("on");
+
+        quantity.value="";
+
       }
+
+    };
+
+
+    // Quantity change
+    quantity.oninput=()=>{
+
+      quantity.value=quantity.value.replace(/\D/g,"");
+
+      if(selectedItems[i]){
+        selectedItems[i].qty=quantity.value;
+      }
+
     };
 
   });
 
-  // Quantity events
-  container.querySelectorAll('input[type="text"]').forEach(q=>{
-
-    q.oninput=()=>{
-      q.value=q.value.replace(/\D/g,"");
-    };
-
-  });
 }
 
 
@@ -670,9 +721,14 @@ function renderRows(indices){
 
 function entry(){
 
+  // New entry starts with fresh selection
+  selectedItems={};
+
   app.innerHTML=`
 
-    <header id="back">‹ Saman chuniye</header>
+    <header id="back">
+      ‹ Saman chuniye
+    </header>
 
     <input
       id="s"
@@ -699,19 +755,25 @@ function entry(){
 
   $("#addItem").onclick=addItem;
 
+
   // Show all items initially
   renderRows(ALL_ITEMS.map((item,i)=>i));
 
-  // LIVE SEARCH
+
+  // Live Search
   $("#s").oninput=e=>{
 
     const results=searchItems(e.target.value);
 
+    // Only visible rows are recreated.
+    // Selected data remains in selectedItems.
     renderRows(results);
 
   };
 
+
   $("#exp").onclick=exportList;
+
 }
 
 
@@ -747,9 +809,11 @@ function draw(rows,dateStr){
   const HF='"Noto Sans Devanagari","Noto Sans",sans-serif';
   const SF='"Noto Serif",Georgia,"Times New Roman",serif';
 
+
   // Background
   g.fillStyle="#f5f3f8";
   g.fillRect(0,0,W,H);
+
 
   // Shop name
   g.fillStyle="#0b4f8f";
@@ -763,6 +827,7 @@ function draw(rows,dateStr){
   g.fillText(PLACE,L,175);
 
   g.fillRect(L,195,R-L,4);
+
 
   // Date box
   g.fillStyle="#fff";
@@ -783,8 +848,8 @@ function draw(rows,dateStr){
   g.fillText(dateStr,L+135,247);
   g.fillText(String(rows.length),880,247);
 
-  // TABLE HEADING
-  // Normal weight - not bold
+
+  // Table heading - original font style
   g.fillStyle="#08558f";
   g.fillRect(L,280,R-L,70);
 
@@ -800,6 +865,7 @@ function draw(rows,dateStr){
   g.fillText("Quantity",860,328);
   g.fillText("Unit",R-15,328);
 
+
   // List rows
   const fs=40;
   const listFs=44;
@@ -811,7 +877,6 @@ function draw(rows,dateStr){
     const y=top+i*rh;
     const by=y+rh*0.72;
 
-    // Alternate row background
     g.fillStyle=i%2?"#e6eff7":"#cfd8e6";
     g.fillRect(L,y,R-L,rh);
 
@@ -821,25 +886,30 @@ function draw(rows,dateStr){
 
     g.fillStyle="#111";
 
-    // Serial number - BOLD and bigger
+
+    // Serial number - bold and bigger
     g.font=`bold ${listFs}px ${HF}`;
     g.textAlign="right";
 
     g.fillText(String(i+1),175,by);
 
-    // Item name - BOLD and bigger
+
+    // Item name - bold and bigger
     g.font=`bold ${listFs}px ${HF}`;
     g.textAlign="left";
 
     g.fillText(r.name,200,by,440);
 
+
     // Dash
     g.font=`${fs}px ${HF}`;
     g.fillText("-",650,by);
 
+
     // Quantity
     g.textAlign="right";
     g.fillText(r.qty,860,by);
+
 
     // Unit
     g.font=`bold ${fs}px ${HF}`;
@@ -848,6 +918,7 @@ function draw(rows,dateStr){
   }
 
   return c.toDataURL("image/jpeg",0.98).split(",")[1];
+
 }
 
 
@@ -859,24 +930,34 @@ async function exportList(){
 
   const rows=[];
 
-  document.querySelectorAll(
-    'input[type="checkbox"]:checked'
-  ).forEach(c=>{
 
-    const i=+c.dataset.i;
+  // Collect ALL selected items,
+  // including items hidden by current search
+  Object.keys(selectedItems).forEach(key=>{
+
+    const i=Number(key);
 
     rows.push({
+
       name:ALL_ITEMS[i][0],
+
       unit:ALL_ITEMS[i][1],
-      qty:$("#q"+i).value||"-"
+
+      qty:selectedItems[i].qty||"-"
+
     });
 
   });
 
+
   if(!rows.length){
+
     alert("Kam se kam ek saman tick kijiye");
+
     return;
+
   }
+
 
   const d=new Date();
 
@@ -890,51 +971,80 @@ async function exportList(){
 
   const id=Date.now();
 
+
   try{
 
     const f=await FS().writeFile({
+
       path:`share_${id}.jpg`,
+
       data:b64,
+
       directory:"CACHE"
+
     });
+
 
     await P().Share.share({
+
       title:"Saman List",
+
       files:[f.uri]
+
     });
 
+
     await FS().writeFile({
+
       path:`lists/${id}.jpg`,
+
       data:b64,
+
       directory:"DATA",
+
       recursive:true
+
     });
+
 
     const h=hist();
 
     h.unshift({
+
       id,
+
       date:dateStr+" "+d.toLocaleTimeString("en-GB",{
+
         hour:"2-digit",
+
         minute:"2-digit"
+
       }),
+
       count:rows.length
+
     });
+
 
     localStorage.setItem(
       "hist",
       JSON.stringify(h)
     );
 
+
     home();
+
 
   }catch(e){
 
     if(!/cancel/i.test(String(e&&e.message||e))){
+
       alert("Error: "+e);
+
     }
 
   }
+
 }
 
 

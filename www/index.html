@@ -17,6 +17,8 @@
   --divider:#C7D6DE;
   --delete:#E76B64;
   --app-bg:url("app_bg.png");
+  --pink-glass-border:rgba(248, 165, 194, 0.88);
+  --pink-glass-glow:0 0 12px rgba(244, 143, 177, 0.32), inset 0 1px 1px rgba(255, 228, 238, 0.85);
   --neu-shadow:8px 8px 16px rgba(155, 178, 191, 0.45), -8px -8px 16px rgba(255, 255, 255, 0.88);
   --neu-sm:5px 5px 11px rgba(155, 178, 191, 0.42), -5px -5px 11px rgba(255, 255, 255, 0.88);
   --neu-inset:inset 3px 3px 7px rgba(155, 178, 191, 0.45), inset -3px -3px 7px rgba(255, 255, 255, 0.85);
@@ -40,7 +42,7 @@ body{
   padding:12px 14px 28px;
 }
 
-/* Neumorphic Top Shop & Logo Card with Visible App BG */
+/* Top Shop & Logo Heading Box with Zoomed App-BG Pattern & Pink Glass Border */
 .top-card{
   position:relative;
   overflow:hidden;
@@ -50,11 +52,20 @@ body{
   gap:10px;
   padding:12px 14px;
   border-radius:24px;
-  background:linear-gradient(145deg, rgba(248,250,251,0.78), rgba(220,231,236,0.72));
-  backdrop-filter:blur(6px);
-  -webkit-backdrop-filter:blur(6px);
-  border:1.2px solid rgba(255,255,255,0.85);
-  box-shadow:var(--neu-shadow), inset 0 1px 1px rgba(255,255,255,0.9);
+  background-color:rgba(248,250,251,0.72);
+  background-image:
+    linear-gradient(145deg, rgba(248,250,251,0.78), rgba(220,231,236,0.72)),
+    var(--app-bg);
+  background-size:100% 100%, 185% auto;
+  background-position:center, center 12%;
+  backdrop-filter:blur(7px);
+  -webkit-backdrop-filter:blur(7px);
+  border:1.8px solid var(--pink-glass-border);
+  box-shadow:var(--neu-shadow), var(--pink-glass-glow);
+}
+.top-card > *{
+  position:relative;
+  z-index:1;
 }
 .shop-left{
   display:flex;
@@ -62,12 +73,22 @@ body{
   gap:12px;
   min-width:0;
 }
-.shop-logo{
-  width:56px;
-  height:56px;
+.shop-logo-wrap{
+  width:58px;
+  height:58px;
   flex-shrink:0;
   border-radius:50%;
+  background:linear-gradient(145deg, #FFFFFF, #DCE7EC);
+  border:1.5px solid rgba(255,255,255,0.92);
   box-shadow:var(--neu-sm);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.shop-logo{
+  width:46px;
+  height:46px;
+  display:block;
 }
 .shop-name{
   font-size:20px;
@@ -82,18 +103,24 @@ body{
 .shop-place{
   display:flex;
   align-items:center;
-  gap:4px;
+  gap:5px;
   font-size:13px;
   color:var(--sec-text);
   margin-top:3px;
   font-weight:600;
+}
+.pin-icon{
+  width:14px;
+  height:14px;
+  fill:var(--dark-primary);
+  flex-shrink:0;
 }
 .cart-box{
   position:relative;
   display:flex;
   align-items:center;
   padding-left:12px;
-  border-left:1.2px solid rgba(199,214,222,0.8);
+  border-left:1.2px solid rgba(199,214,222,0.85);
   flex-shrink:0;
 }
 .cart-badge{
@@ -114,7 +141,7 @@ body{
   box-shadow:2px 2px 6px rgba(32,44,53,0.22);
 }
 
-/* Neumorphic Date & Kul Suchi Heading Bar */
+/* Date & Kul Suchi Heading Bar with Zoomed App-BG Pattern & Pink Glass Border */
 .date-bar{
   position:relative;
   overflow:hidden;
@@ -122,11 +149,16 @@ body{
   height:52px;
   margin:12px 0 10px;
   border-radius:999px;
-  background:linear-gradient(145deg, rgba(248,250,251,0.78), rgba(220,231,236,0.72));
-  backdrop-filter:blur(6px);
-  -webkit-backdrop-filter:blur(6px);
-  border:1.2px solid rgba(255,255,255,0.88);
-  box-shadow:var(--neu-shadow), inset 0 1px 1px rgba(255,255,255,0.9);
+  background-color:rgba(248,250,251,0.72);
+  background-image:
+    linear-gradient(145deg, rgba(248,250,251,0.78), rgba(220,231,236,0.72)),
+    var(--app-bg);
+  background-size:100% 100%, 195% auto;
+  background-position:center, center 24%;
+  backdrop-filter:blur(7px);
+  -webkit-backdrop-filter:blur(7px);
+  border:1.8px solid var(--pink-glass-border);
+  box-shadow:var(--neu-shadow), var(--pink-glass-glow);
   display:flex;
   align-items:center;
   justify-content:space-between;
@@ -170,23 +202,28 @@ body{
   flex-shrink:0;
 }
 
-/* Neumorphic Table Heading Box with Visible BG */
+/* Table Heading Box with Zoomed App-BG Pattern & Pink Glass Border */
 .th-bar{
   position:relative;
   overflow:hidden;
   display:grid;
   grid-template-columns:44px 1fr 82px 68px;
   align-items:center;
-  background:linear-gradient(145deg, rgba(96,125,139,0.86), rgba(69,95,109,0.90));
-  backdrop-filter:blur(6px);
-  -webkit-backdrop-filter:blur(6px);
+  background-color:var(--primary);
+  background-image:
+    linear-gradient(145deg, rgba(96,125,139,0.82), rgba(69,95,109,0.88)),
+    var(--app-bg);
+  background-size:100% 100%, 205% auto;
+  background-position:center, center 32%;
+  backdrop-filter:blur(7px);
+  -webkit-backdrop-filter:blur(7px);
   color:#fff;
   border-radius:18px;
   padding:11px 14px;
   font-size:14.5px;
   font-weight:700;
-  border:1.2px solid rgba(255,255,255,0.62);
-  box-shadow:5px 5px 12px rgba(69,95,109,0.28), -4px -4px 10px rgba(255,255,255,0.65), inset 1px 1px 2px rgba(255,255,255,0.35);
+  border:1.8px solid var(--pink-glass-border);
+  box-shadow:5px 5px 12px rgba(69,95,109,0.28), var(--pink-glass-glow);
   margin-bottom:10px;
 }
 .th-c{text-align:center}
@@ -532,45 +569,45 @@ function updateTickCount(){
   if(totalTxt)totalTxt.textContent=String(cnt);
 }
 
+function locationPinSVG(){
+  return `
+    <svg class="pin-icon" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+    </svg>
+  `;
+}
+
+function shopLogoSVG(){
+  return `
+    <div class="shop-logo-wrap">
+      <svg class="shop-logo" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M20 44 L31 20 Q33 17 37 17 L83 17 Q87 17 89 20 L100 44 Z" fill="#455F6D"/>
+        <polygon points="44,17 55,17 52,44 37,44" fill="#DCE7EC"/>
+        <polygon points="65,17 76,17 83,44 68,44" fill="#DCE7EC"/>
+        <path d="M20 44 L36 44 L36 47 A8 8 0 0 1 20 47 Z" fill="#F8FAFB"/>
+        <path d="M36 44 L52 44 L52 47 A8 8 0 0 1 36 47 Z" fill="#F8FAFB"/>
+        <path d="M52 44 L68 44 L68 47 A8 8 0 0 1 52 47 Z" fill="#F8FAFB"/>
+        <path d="M68 44 L84 44 L84 47 A8 8 0 0 1 68 47 Z" fill="#F8FAFB"/>
+        <path d="M84 44 L100 44 L100 47 A8 8 0 0 1 84 47 Z" fill="#F8FAFB"/>
+        <rect x="26" y="49" width="68" height="40" rx="3" fill="#607D8B"/>
+        <rect x="26" y="49" width="68" height="6" fill="#455F6D"/>
+        <path d="M51 89 L51 69 Q51 64 56 64 L64 64 Q69 64 69 69 L69 89 Z" fill="#F8FAFB"/>
+        <rect x="21" y="88" width="78" height="8" rx="4" fill="#455F6D"/>
+      </svg>
+    </div>
+  `;
+}
+
 function headerHTML(count){
   const dateStr=getAutoDate();
   return `
     <div class="top-card">
       <div class="shop-left">
-        <svg class="shop-logo" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <radialGradient id="cBg" cx="35%" cy="28%" r="72%">
-              <stop offset="0%" stop-color="#FFFFFF"/>
-              <stop offset="72%" stop-color="#F2F8FD"/>
-              <stop offset="100%" stop-color="#DCE7EC"/>
-            </radialGradient>
-            <linearGradient id="dShop" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#607D8B"/>
-              <stop offset="100%" stop-color="#455F6D"/>
-            </linearGradient>
-            <linearGradient id="lAwning" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#DCE7EC"/>
-              <stop offset="100%" stop-color="#F8FAFB"/>
-            </linearGradient>
-          </defs>
-          <circle cx="120" cy="120" r="102" fill="url(#cBg)" stroke="#FFFFFF" stroke-width="4"/>
-          <rect x="66" y="102" width="108" height="60" rx="4" fill="url(#dShop)"/>
-          <rect x="66" y="102" width="108" height="10" fill="#202C35" opacity="0.24"/>
-          <path d="M104 162 L104 134 Q104 127 111 127 L129 127 Q136 127 136 134 L136 162 Z" fill="#F8FAFB"/>
-          <path d="M56 96 L72 62 Q75 57 81 57 L159 57 Q165 57 168 62 L184 96 Z" fill="url(#dShop)"/>
-          <polygon points="94,57 111,57 107,96 84,96" fill="url(#lAwning)"/>
-          <polygon points="129,57 146,57 156,96 133,96" fill="url(#lAwning)"/>
-          <path d="M56 96 L81.6 96 L81.6 100 A12.8 12.8 0 0 1 56 100 Z" fill="url(#lAwning)"/>
-          <path d="M81.6 96 L107.2 96 L107.2 100 A12.8 12.8 0 0 1 81.6 100 Z" fill="url(#lAwning)"/>
-          <path d="M107.2 96 L132.8 96 L132.8 100 A12.8 12.8 0 0 1 107.2 100 Z" fill="url(#lAwning)"/>
-          <path d="M132.8 96 L158.4 96 L158.4 100 A12.8 12.8 0 0 1 132.8 100 Z" fill="url(#lAwning)"/>
-          <path d="M158.4 96 L184 96 L184 100 A12.8 12.8 0 0 1 158.4 100 Z" fill="url(#lAwning)"/>
-          <rect x="58" y="159" width="124" height="13" rx="6.5" fill="#455F6D"/>
-        </svg>
+        ${shopLogoSVG()}
         <div>
           <div class="shop-name">${safeText(SHOP)}</div>
           <div class="shop-place">
-            <span>📍</span>
+            ${locationPinSVG()}
             <span>${safeText(PLACE)}</span>
           </div>
         </div>
@@ -847,10 +884,10 @@ function drawRoundedRectPath(g, x, y, w, h, r){
   g.closePath();
 }
 
-function drawNeuCard(g, x, y, w, h, r, fillStyle, strokeStyle = "rgba(255,255,255,0.88)"){
+function drawNeuCard(g, x, y, w, h, r, fillStyle, strokeStyle = "rgba(255,255,255,0.92)"){
   g.save();
-  g.shadowColor = "rgba(255, 255, 255, 0.9)";
-  g.shadowBlur = 12;
+  g.shadowColor = "rgba(255, 255, 255, 0.92)";
+  g.shadowBlur = 14;
   g.shadowOffsetX = -5;
   g.shadowOffsetY = -5;
   drawRoundedRectPath(g, x, y, w, h, r);
@@ -859,8 +896,8 @@ function drawNeuCard(g, x, y, w, h, r, fillStyle, strokeStyle = "rgba(255,255,25
   g.restore();
 
   g.save();
-  g.shadowColor = "rgba(32, 44, 53, 0.14)";
-  g.shadowBlur = 14;
+  g.shadowColor = "rgba(32, 44, 53, 0.16)";
+  g.shadowBlur = 16;
   g.shadowOffsetX = 6;
   g.shadowOffsetY = 6;
   drawRoundedRectPath(g, x, y, w, h, r);
@@ -870,20 +907,69 @@ function drawNeuCard(g, x, y, w, h, r, fillStyle, strokeStyle = "rgba(255,255,25
 
   drawRoundedRectPath(g, x, y, w, h, r);
   g.strokeStyle = strokeStyle;
-  g.lineWidth = 2;
+  g.lineWidth = 2.4;
   g.stroke();
 }
 
-// 4K export with neumorphic cards/rows over app_bg.png, extra open row space, no edit/delete or bottom buttons
+function drawZoomedBgHeadingBox(g, x, y, w, h, r, bgImg, zoomScale, tintFill, borderColor = "rgba(248, 165, 194, 0.90)"){
+  drawNeuCard(g, x, y, w, h, r, tintFill, borderColor);
+
+  if(bgImg){
+    g.save();
+    drawRoundedRectPath(g, x + 2, y + 2, w - 4, h - 4, Math.max(2, r - 2));
+    g.clip();
+
+    const baseScale = Math.max(w / bgImg.width, h / bgImg.height) * zoomScale;
+    const dw = bgImg.width * baseScale;
+    const dh = bgImg.height * baseScale;
+    const dx = x + (w - dw) / 2;
+    const dy = y + (h - dh) / 2;
+
+    g.globalAlpha = 0.24;
+    g.drawImage(bgImg, dx, dy, dw, dh);
+    g.restore();
+
+    drawRoundedRectPath(g, x + 1, y + 1, w - 2, h - 2, Math.max(2, r - 1));
+    g.strokeStyle = "rgba(255, 224, 236, 0.72)";
+    g.lineWidth = 1.4;
+    g.stroke();
+
+    drawRoundedRectPath(g, x, y, w, h, r);
+    g.strokeStyle = borderColor;
+    g.lineWidth = 2.6;
+    g.stroke();
+  }
+}
+
+function drawCanvasLocationPin(g, cx, cy, size = 24, color = "#455F6D"){
+  g.save();
+  g.fillStyle = color;
+  const r = size * 0.34;
+  const topY = cy - size * 0.42;
+  g.beginPath();
+  g.arc(cx, topY + r, r, Math.PI * 0.85, Math.PI * 2.15);
+  g.lineTo(cx, cy + size * 0.46);
+  g.closePath();
+  g.fill();
+
+  g.beginPath();
+  g.arc(cx, topY + r, r * 0.42, 0, Math.PI * 2);
+  g.fillStyle = "#F8FAFB";
+  g.fill();
+  g.restore();
+}
+
 async function draw4K(rows, dateStr){
   const W = 1080;
   const targetWidth = 3840;
   const S = targetWidth / W;
 
-  const startY = 344;
-  const rowH = 74;
-  const totalSlots = rows.length + EXTRA_ROWS;
-  const H = startY + (totalSlots * rowH) + 32;
+  const extraRows = typeof EXTRA_ROWS === "number" ? EXTRA_ROWS : 4;
+  const startY = 374;
+  const rowH = 98;
+  const pillHeight = 78;
+  const totalSlots = rows.length + extraRows;
+  const H = startY + (totalSlots * rowH) + 36;
 
   const c = document.createElement("canvas");
   c.width = targetWidth;
@@ -892,12 +978,12 @@ async function draw4K(rows, dateStr){
   const g = c.getContext("2d");
   g.scale(S, S);
 
-  const L = 44;
-  const R = W - 44;
+  const L = 36;
+  const R = W - 36;
   const boxW = R - L;
   const HF = '"Noto Sans Devanagari","Segoe UI",sans-serif';
 
-  // 1. Background (app_bg.png visible across full canvas)
+  // 1. Full App Background
   g.fillStyle = "#EAF1F4";
   g.fillRect(0, 0, W, H);
 
@@ -918,168 +1004,172 @@ async function draw4K(rows, dateStr){
     g.drawImage(bgImg, dx, dy, dw, dh);
   }
 
-  // 2. Neumorphic Top Shop & Logo Card
-  const topGrad = g.createLinearGradient(L, 24, R, 158);
-  topGrad.addColorStop(0, "rgba(248, 250, 251, 0.86)");
-  topGrad.addColorStop(1, "rgba(220, 231, 236, 0.80)");
-  drawNeuCard(g, L, 24, boxW, 134, 34, topGrad, "rgba(255, 255, 255, 0.92)");
+  // 2. Top Shop Heading Box
+  const topY = 24;
+  const topH = 152;
+  const topGrad = g.createLinearGradient(L, topY, R, topY + topH);
+  topGrad.addColorStop(0, "rgba(248, 250, 251, 0.88)");
+  topGrad.addColorStop(1, "rgba(220, 231, 236, 0.82)");
+  drawZoomedBgHeadingBox(g, L, topY, boxW, topH, 38, bgImg, 1.85, topGrad, "rgba(248, 165, 194, 0.90)");
 
-  const badgeCx = L + 74;
-  const badgeCy = 91;
+  const badgeCx = L + 84;
+  const badgeCy = topY + topH / 2;
   g.save();
   g.shadowColor = "rgba(32, 44, 53, 0.14)";
   g.shadowBlur = 10;
-  g.shadowOffsetX = 4;
+  g.shadowOffsetX = 3;
   g.shadowOffsetY = 4;
   g.beginPath();
-  g.arc(badgeCx, badgeCy, 42, 0, Math.PI * 2);
-  g.fillStyle = "rgba(248, 250, 251, 0.94)";
+  g.arc(badgeCx, badgeCy, 48, 0, Math.PI * 2);
+  g.fillStyle = "#F8FAFB";
   g.fill();
   g.restore();
 
   g.beginPath();
-  g.arc(badgeCx, badgeCy, 42, 0, Math.PI * 2);
-  g.strokeStyle = "#FFFFFF";
+  g.arc(badgeCx, badgeCy, 48, 0, Math.PI * 2);
+  g.strokeStyle = "#DCE7EC";
   g.lineWidth = 2.5;
   g.stroke();
 
   g.fillStyle = "#455F6D";
   g.beginPath();
-  g.moveTo(badgeCx - 22, badgeCy - 4);
-  g.lineTo(badgeCx - 16, badgeCy - 20);
-  g.lineTo(badgeCx + 16, badgeCy - 20);
-  g.lineTo(badgeCx + 22, badgeCy - 4);
+  g.moveTo(badgeCx - 25, badgeCy - 5);
+  g.lineTo(badgeCx - 18, badgeCy - 23);
+  g.lineTo(badgeCx + 18, badgeCy - 23);
+  g.lineTo(badgeCx + 25, badgeCy - 5);
   g.closePath();
   g.fill();
 
   g.fillStyle = "#607D8B";
-  g.fillRect(badgeCx - 17, badgeCy - 3, 34, 21);
+  g.fillRect(badgeCx - 19, badgeCy - 4, 38, 24);
   g.fillStyle = "#F8FAFB";
-  g.fillRect(badgeCx - 6, badgeCy + 4, 12, 14);
+  g.fillRect(badgeCx - 7, badgeCy + 4, 14, 16);
 
   g.fillStyle = "#202C35";
   g.textBaseline = "alphabetic";
   g.textAlign = "left";
-  g.font = `bold 44px ${HF}`;
-  g.fillText(SHOP, L + 132, 84);
+  g.font = `bold 48px ${HF}`;
+  g.fillText(SHOP, L + 148, topY + 68);
 
+  // Location pin icon + PLACE
+  drawCanvasLocationPin(g, L + 160, topY + 105, 26, "#455F6D");
   g.fillStyle = "#647783";
-  g.font = `600 26px ${HF}`;
-  g.fillText(PLACE, L + 132, 124);
+  g.font = `600 28px ${HF}`;
+  g.fillText(PLACE, L + 180, topY + 114);
 
-  const divX = R - 118;
-  g.strokeStyle = "rgba(199, 214, 222, 0.9)";
-  g.lineWidth = 2;
+  // Divider & Cart Badge
+  const divX = R - 134;
+  g.strokeStyle = "#C7D6DE";
+  g.lineWidth = 2.5;
   g.beginPath();
-  g.moveTo(divX, 46);
-  g.lineTo(divX, 136);
+  g.moveTo(divX, topY + 24);
+  g.lineTo(divX, topY + topH - 24);
   g.stroke();
 
-  const cartCx = R - 60;
-  const cartCy = 94;
+  const cartCx = R - 68;
+  const cartCy = topY + topH / 2 + 4;
   g.fillStyle = "#455F6D";
-  g.fillRect(cartCx - 18, cartCy - 6, 30, 14);
+  g.fillRect(cartCx - 20, cartCy - 6, 34, 16);
   g.beginPath();
-  g.arc(cartCx - 10, cartCy + 14, 4.5, 0, Math.PI * 2);
-  g.arc(cartCx + 8, cartCy + 14, 4.5, 0, Math.PI * 2);
+  g.arc(cartCx - 11, cartCy + 16, 5, 0, Math.PI * 2);
+  g.arc(cartCx + 9, cartCy + 16, 5, 0, Math.PI * 2);
   g.fill();
 
   g.beginPath();
-  g.arc(cartCx + 14, cartCy - 14, 16, 0, Math.PI * 2);
+  g.arc(cartCx + 16, cartCy - 16, 18, 0, Math.PI * 2);
   g.fillStyle = "#607D8B";
   g.fill();
   g.fillStyle = "#FFFFFF";
-  g.font = `bold 18px ${HF}`;
+  g.font = `bold 20px ${HF}`;
   g.textAlign = "center";
   g.textBaseline = "middle";
-  g.fillText(String(rows.length), cartCx + 14, cartCy - 13);
+  g.fillText(String(rows.length), cartCx + 16, cartCy - 15);
 
-  // 3. Neumorphic Date & Kul Suchi Heading Bar
-  const metaY = 172;
-  const metaH = 56;
+  // 3. Date & Total List Heading Box
+  const metaY = 192;
+  const metaH = 66;
   const metaGrad = g.createLinearGradient(L, metaY, R, metaY + metaH);
-  metaGrad.addColorStop(0, "rgba(248, 250, 251, 0.88)");
-  metaGrad.addColorStop(1, "rgba(220, 231, 236, 0.82)");
-  drawNeuCard(g, L, metaY, boxW, metaH, metaH / 2, metaGrad, "rgba(255, 255, 255, 0.92)");
+  metaGrad.addColorStop(0, "rgba(248, 250, 251, 0.90)");
+  metaGrad.addColorStop(1, "rgba(220, 231, 236, 0.84)");
+  drawZoomedBgHeadingBox(g, L, metaY, boxW, metaH, metaH / 2, bgImg, 2.0, metaGrad, "rgba(248, 165, 194, 0.90)");
 
   g.fillStyle = "#455F6D";
   g.textAlign = "left";
   g.textBaseline = "middle";
-  g.font = `bold 27px ${HF}`;
-  g.fillText(`दिनांक: ${dateStr}`, L + 28, metaY + metaH / 2 + 1);
+  g.font = `bold 30px ${HF}`;
+  g.fillText(`दिनांक: ${dateStr}`, L + 32, metaY + metaH / 2 + 1);
 
-  const pillW = 248;
-  const pillX = R - pillW - 3;
-  drawRoundedRectPath(g, pillX, metaY + 3, pillW, metaH - 6, (metaH - 6) / 2);
-  const pillGrad = g.createLinearGradient(pillX, metaY + 3, pillX + pillW, metaY + metaH - 3);
+  const pillW = 286;
+  const pillX = R - pillW - 4;
+  drawRoundedRectPath(g, pillX, metaY + 4, pillW, metaH - 8, (metaH - 8) / 2);
+  const pillGrad = g.createLinearGradient(pillX, metaY + 4, pillX + pillW, metaY + metaH - 4);
   pillGrad.addColorStop(0, "#607D8B");
   pillGrad.addColorStop(1, "#455F6D");
   g.fillStyle = pillGrad;
   g.fill();
 
   g.fillStyle = "#FFFFFF";
-  g.font = `bold 26px ${HF}`;
+  g.font = `bold 30px ${HF}`;
   g.textAlign = "center";
-  g.fillText(`कुल सूची: ${rows.length}`, pillX + pillW / 2 - 10, metaY + metaH / 2 + 1);
+  g.fillText(`कुल सूची: ${rows.length}`, pillX + pillW / 2 - 12, metaY + metaH / 2 + 1);
 
-  // 4. Neumorphic Table Heading Box
-  const thY = 242;
-  const thH = 66;
+  // 4. Table Heading Box
+  const thY = 276;
+  const thH = 78;
   const thGrad = g.createLinearGradient(L, thY, R, thY + thH);
-  thGrad.addColorStop(0, "rgba(96, 125, 139, 0.90)");
-  thGrad.addColorStop(1, "rgba(69, 95, 109, 0.94)");
-  drawNeuCard(g, L, thY, boxW, thH, thH / 2, thGrad, "rgba(255, 255, 255, 0.72)");
+  thGrad.addColorStop(0, "rgba(96, 125, 139, 0.88)");
+  thGrad.addColorStop(1, "rgba(69, 95, 109, 0.92)");
+  drawZoomedBgHeadingBox(g, L, thY, boxW, thH, thH / 2, bgImg, 2.1, thGrad, "rgba(248, 165, 194, 0.90)");
 
   g.fillStyle = "#FFFFFF";
-  g.font = `bold 27px ${HF}`;
+  g.font = `bold 31px ${HF}`;
   g.textBaseline = "middle";
   g.textAlign = "left";
-  g.fillText("No.", L + 26, thY + thH / 2 + 1);
-  g.fillText("सामान सूची", L + 135, thY + thH / 2 + 1);
+  g.fillText("No.", L + 32, thY + thH / 2 + 1);
+  g.fillText("सामान सूची", L + 148, thY + thH / 2 + 1);
 
   g.textAlign = "center";
-  g.fillText("Quantity", 735, thY + thH / 2 + 1);
-  g.fillText("Unit", R - 78, thY + thH / 2 + 1);
+  g.fillText("Quantity", 675, thY + thH / 2 + 1);
+  g.fillText("Unit", R - 105, thY + thH / 2 + 1);
 
-  // 5. Neumorphic Ticked Item Rows (No edit/delete buttons, extra rows open on app_bg.png without boxes)
+  // 5. Ticked Item Pill Rows
   for(let i = 0; i < rows.length; i++){
     const r = rows[i];
     const y = startY + (i * rowH);
-    const pillHeight = rowH - 12;
     const cy = y + (pillHeight / 2);
 
     const rowGrad = g.createLinearGradient(L, y, R, y + pillHeight);
-    rowGrad.addColorStop(0, "rgba(248, 250, 251, 0.88)");
-    rowGrad.addColorStop(1, "rgba(220, 231, 236, 0.82)");
-    drawNeuCard(g, L, y, boxW, pillHeight, pillHeight / 2, rowGrad, "rgba(255, 255, 255, 0.88)");
+    rowGrad.addColorStop(0, "rgba(248, 250, 251, 0.94)");
+    rowGrad.addColorStop(1, "rgba(234, 241, 244, 0.90)");
+    drawNeuCard(g, L, y, boxW, pillHeight, pillHeight / 2, rowGrad, "rgba(255, 255, 255, 0.95)");
 
     g.fillStyle = "#647783";
-    g.font = `bold 27px ${HF}`;
+    g.font = `bold 32px ${HF}`;
     g.textAlign = "left";
     g.textBaseline = "middle";
-    g.fillText(String(i + 1).padStart(2, "0"), L + 28, cy + 1);
+    g.fillText(String(i + 1).padStart(2, "0"), L + 32, cy + 1);
 
     g.fillStyle = "#202C35";
-    g.font = `bold 29px ${HF}`;
-    g.fillText(r.name, L + 135, cy + 1, 430);
+    g.font = `bold 34px ${HF}`;
+    g.fillText(r.name, L + 148, cy + 1, 410);
 
     g.fillStyle = "#202C35";
-    g.font = `bold 29px ${HF}`;
+    g.font = `bold 34px ${HF}`;
     g.textAlign = "center";
-    g.fillText(String(r.qty), 735, cy + 1);
+    g.fillText(String(r.qty), 675, cy + 1);
 
-    const uW = 108;
-    const uH = 40;
-    const uX = R - 132;
+    const uW = 136;
+    const uH = 48;
+    const uX = R - 172;
     drawRoundedRectPath(g, uX, cy - (uH / 2), uW, uH, uH / 2);
     g.fillStyle = "#DCE7EC";
     g.fill();
-    g.strokeStyle = "#FFFFFF";
+    g.strokeStyle = "#C7D6DE";
     g.lineWidth = 1.5;
     g.stroke();
 
     g.fillStyle = "#455F6D";
-    g.font = `bold 22px ${HF}`;
+    g.font = `bold 25px ${HF}`;
     g.fillText(String(r.unit), uX + (uW / 2), cy + 1);
   }
 

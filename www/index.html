@@ -17,6 +17,7 @@
   --divider:#C7D6DE;
   --delete:#E76B64;
   --app-bg:url("app_bg.png");
+  --float-line-shadow:0 3px 0 rgba(32, 44, 53, 0.24), 0 1px 0 rgba(32, 44, 53, 0.14);
   --neu-card:7px 7px 14px rgba(155, 178, 191, 0.42), -7px -7px 14px rgba(255, 255, 255, 0.90);
   --neu-sm:4px 4px 10px rgba(155, 178, 191, 0.38), -4px -4px 10px rgba(255, 255, 255, 0.88);
   --neu-inset:inset 3px 3px 6px rgba(155, 178, 191, 0.42), inset -3px -3px 6px rgba(255, 255, 255, 0.85);
@@ -40,7 +41,7 @@ body{
   padding:12px 14px 28px;
 }
 
-/* Normal Clean Neomorphic Top Shop & Logo Card (No Zoom) */
+/* Transparent White-Tinted Top Heading Box with Fine Non-Blur Dark Line Shadow */
 .top-card{
   display:flex;
   align-items:center;
@@ -48,9 +49,9 @@ body{
   gap:10px;
   padding:12px 14px;
   border-radius:20px;
-  background:var(--card);
-  border:1px solid rgba(255,255,255,0.88);
-  box-shadow:var(--neu-card);
+  background:rgba(248, 250, 251, 0.36);
+  border:1px solid rgba(255, 255, 255, 0.78);
+  box-shadow:var(--float-line-shadow);
 }
 .shop-left{
   display:flex;
@@ -59,41 +60,43 @@ body{
   min-width:0;
 }
 .shop-logo-wrap{
-  width:56px;
-  height:56px;
+  width:66px;
+  height:66px;
   flex-shrink:0;
   border-radius:50%;
-  background:var(--card);
-  border:1px solid var(--soft-blue);
-  box-shadow:var(--neu-sm);
+  background:rgba(248, 250, 251, 0.85);
+  border:1.5px solid rgba(255, 255, 255, 0.92);
+  box-shadow:0 2px 0 rgba(32, 44, 53, 0.20);
   display:flex;
   align-items:center;
   justify-content:center;
   overflow:hidden;
 }
 .shop-logo-img{
-  width:42px;
-  height:42px;
-  object-fit:contain;
+  width:66px;
+  height:66px;
+  border-radius:50%;
+  object-fit:cover;
   display:block;
 }
 .shop-name{
-  font-size:20px;
+  font-size:20.5px;
   font-weight:700;
   color:var(--text);
   line-height:1.2;
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
+  text-shadow:0 1px 0 rgba(255, 255, 255, 0.85);
 }
 .shop-place{
   display:flex;
   align-items:center;
   gap:5px;
-  font-size:13px;
+  font-size:13.5px;
   color:var(--sec-text);
   margin-top:3px;
-  font-weight:600;
+  font-weight:700;
 }
 .pin-icon{
   width:14px;
@@ -106,7 +109,7 @@ body{
   display:flex;
   align-items:center;
   padding-left:12px;
-  border-left:1px solid var(--divider);
+  border-left:1px solid rgba(100, 119, 131, 0.35);
   flex-shrink:0;
 }
 .cart-badge{
@@ -124,18 +127,18 @@ body{
   display:flex;
   align-items:center;
   justify-content:center;
-  box-shadow:var(--neu-sm);
+  box-shadow:0 1px 0 rgba(32, 44, 53, 0.3);
 }
 
-/* Normal Clean Neomorphic Date & Kul Suchi Bar (No Zoom) */
+/* Date & Kul Suchi Bar */
 .date-bar{
   width:100%;
   height:52px;
   margin:12px 0 10px;
   border-radius:999px;
-  background:var(--card);
-  border:1px solid rgba(255,255,255,0.88);
-  box-shadow:var(--neu-card);
+  background:rgba(248, 250, 251, 0.55);
+  border:1px solid rgba(255, 255, 255, 0.84);
+  box-shadow:var(--float-line-shadow);
   display:flex;
   align-items:center;
   justify-content:space-between;
@@ -147,7 +150,7 @@ body{
   gap:8px;
   padding-left:14px;
   color:var(--dark-primary);
-  font-size:15.5px;
+  font-size:16px;
   font-weight:700;
   white-space:nowrap;
 }
@@ -163,12 +166,12 @@ body{
   border-radius:999px;
   background:var(--dark-primary);
   color:var(--card);
-  font-size:15px;
+  font-size:15.5px;
   font-weight:700;
   display:flex;
   align-items:center;
   gap:8px;
-  box-shadow:var(--neu-sm);
+  box-shadow:0 1px 0 rgba(32, 44, 53, 0.25);
   white-space:nowrap;
 }
 .count-pill svg{
@@ -178,7 +181,7 @@ body{
   flex-shrink:0;
 }
 
-/* Normal Clean Neomorphic Table Heading Box (No Zoom) */
+/* Table Heading Box */
 .th-bar{
   display:grid;
   grid-template-columns:44px 1fr 82px 68px;
@@ -187,10 +190,10 @@ body{
   color:var(--card);
   border-radius:16px;
   padding:11px 14px;
-  font-size:15px;
+  font-size:15.5px;
   font-weight:700;
-  border:1px solid rgba(255,255,255,0.65);
-  box-shadow:var(--neu-card);
+  border:1px solid rgba(255, 255, 255, 0.65);
+  box-shadow:var(--float-line-shadow);
   margin-bottom:10px;
 }
 .th-c{text-align:center}
@@ -201,7 +204,7 @@ body{
   width:100%;
   margin:10px 0;
   padding:11px 14px;
-  font-size:16px;
+  font-size:16.5px;
   background:var(--card);
   color:var(--text);
   border:1px solid rgba(255,255,255,0.85);
@@ -224,13 +227,13 @@ body{
   border-radius:16px;
   background:var(--card);
   color:var(--dark-primary);
-  font-size:16px;
+  font-size:16.5px;
   font-weight:700;
   box-shadow:var(--neu-card);
   cursor:pointer;
 }
 
-/* Neomorphic Item Rows */
+/* Neomorphic Item Rows (+2% Bigger Font) */
 .row{
   display:flex;
   align-items:center;
@@ -253,7 +256,7 @@ body{
   display:flex;
   align-items:center;
   gap:10px;
-  font-size:19.5px;
+  font-size:20px;
   font-weight:700;
   line-height:1.3;
   min-width:0;
@@ -267,7 +270,7 @@ body{
 .row .qty-input{
   display:none;
   width:76px;
-  font-size:17.5px;
+  font-size:18px;
   font-weight:700;
   padding:6px 8px;
   text-align:center;
@@ -286,7 +289,7 @@ body{
   text-align:center;
   color:var(--dark-primary);
   font-weight:700;
-  font-size:15.5px;
+  font-size:16px;
   background:var(--bg);
   border:1px solid rgba(255,255,255,0.85);
   box-shadow:var(--neu-sm);
@@ -304,7 +307,7 @@ body{
   border-radius:16px;
   background:var(--dark-primary);
   color:var(--card);
-  font-size:17px;
+  font-size:17.5px;
   font-weight:700;
   box-shadow:var(--neu-card);
   cursor:pointer;
@@ -326,15 +329,15 @@ body{
   flex-direction:column;
   gap:3px;
 }
-.card .info b{font-size:17px}
-.card .info small{color:var(--sec-text);font-size:14px}
+.card .info b{font-size:17.5px}
+.card .info small{color:var(--sec-text);font-size:14.5px;font-weight:600}
 .del{
   border:1px solid var(--delete);
   color:var(--delete);
   background:var(--card);
   border-radius:12px;
   padding:7px 11px;
-  font-size:14px;
+  font-size:14.5px;
   font-weight:700;
   box-shadow:var(--neu-sm);
 }
@@ -355,7 +358,7 @@ body{
   background:none;
   border:0;
   color:var(--dark-primary);
-  font-size:16px;
+  font-size:16.5px;
   font-weight:700;
   padding:0;
 }
@@ -377,7 +380,7 @@ img.preview-img{
   text-align:center;
   color:var(--sec-text);
   padding:22px 10px;
-  font-weight:600;
+  font-weight:700;
   background:var(--card);
   border-radius:16px;
   box-shadow:var(--neu-card);
@@ -540,7 +543,7 @@ function locationPinSVG(){
   `;
 }
 
-// Uses icon.svg from www folder
+// Bigger Round Logo using icon.svg
 function shopLogoSVG(){
   return `
     <div class="shop-logo-wrap">
@@ -835,8 +838,30 @@ function drawRoundedRectPath(g, x, y, w, h, r){
   g.closePath();
 }
 
-// Clean Neomorphic Card (like uploaded screenshot with previous palette)
-function drawNeuBox(g, x, y, w, h, r, fillStyle, strokeStyle = "rgba(255,255,255,0.92)"){
+// Floating box with fine non-blur dark line shadow below
+function drawFloatingLineBox(g, x, y, w, h, r, fillStyle, strokeStyle = "rgba(255,255,255,0.85)"){
+  // Fine crisp dark line shadow below (no blur)
+  drawRoundedRectPath(g, x, y + 3, w, h, r);
+  g.fillStyle = "rgba(32, 44, 53, 0.22)";
+  g.fill();
+
+  drawRoundedRectPath(g, x, y + 1.5, w, h, r);
+  g.fillStyle = "rgba(32, 44, 53, 0.12)";
+  g.fill();
+
+  drawRoundedRectPath(g, x, y, w, h, r);
+  g.fillStyle = fillStyle;
+  g.fill();
+
+  if(strokeStyle){
+    drawRoundedRectPath(g, x, y, w, h, r);
+    g.strokeStyle = strokeStyle;
+    g.lineWidth = 2;
+    g.stroke();
+  }
+}
+
+function drawNeuRowBox(g, x, y, w, h, r, fillStyle){
   g.save();
   g.shadowColor = "rgba(255, 255, 255, 0.94)";
   g.shadowBlur = 14;
@@ -858,7 +883,7 @@ function drawNeuBox(g, x, y, w, h, r, fillStyle, strokeStyle = "rgba(255,255,255
   g.restore();
 
   drawRoundedRectPath(g, x, y, w, h, r);
-  g.strokeStyle = strokeStyle;
+  g.strokeStyle = "rgba(255,255,255,0.92)";
   g.lineWidth = 2;
   g.stroke();
 }
@@ -878,6 +903,103 @@ function drawCanvasLocationPin(g, cx, cy, size = 24, color = "#455F6D"){
   g.arc(cx, topY + r, r * 0.42, 0, Math.PI * 2);
   g.fillStyle = "#F8FAFB";
   g.fill();
+  g.restore();
+}
+
+// Calendar icon matching homepage in export image
+function drawCanvasCalendarIcon(g, x, y, size = 28, color = "#455F6D"){
+  g.save();
+  g.fillStyle = color;
+  const s = size / 24;
+  g.translate(x, y);
+  g.scale(s, s);
+  g.beginPath();
+  g.moveTo(19, 3);
+  g.lineTo(18, 3);
+  g.lineTo(18, 1);
+  g.lineTo(16, 1);
+  g.lineTo(16, 3);
+  g.lineTo(8, 3);
+  g.lineTo(8, 1);
+  g.lineTo(6, 1);
+  g.lineTo(6, 3);
+  g.lineTo(5, 3);
+  g.arc(5, 5, 2, Math.PI, Math.PI * 1.5);
+  g.lineTo(3, 19);
+  g.arc(5, 19, 2, Math.PI * 0.5, Math.PI);
+  g.lineTo(19, 21);
+  g.arc(19, 19, 2, 0, Math.PI * 0.5);
+  g.lineTo(21, 5);
+  g.arc(19, 5, 2, Math.PI * 1.5, Math.PI * 2);
+  g.closePath();
+  g.fill();
+
+  g.fillStyle = "#F8FAFB";
+  g.fillRect(5, 9, 14, 10);
+
+  g.fillStyle = color;
+  g.fillRect(7, 11, 2.5, 2.5);
+  g.fillRect(10.75, 11, 2.5, 2.5);
+  g.fillRect(14.5, 11, 2.5, 2.5);
+  g.fillRect(7, 15, 2.5, 2.5);
+  g.fillRect(10.75, 15, 2.5, 2.5);
+  g.restore();
+}
+
+// Three-line list icon matching homepage in export image
+function drawCanvasThreeLinesIcon(g, x, y, size = 26, color = "#FFFFFF"){
+  g.save();
+  g.fillStyle = color;
+  const s = size / 24;
+  g.translate(x, y);
+  g.scale(s, s);
+  g.fillRect(3, 5.5, 2.5, 2.5);
+  g.fillRect(7.5, 5.5, 13.5, 2.5);
+  g.fillRect(3, 10.75, 2.5, 2.5);
+  g.fillRect(7.5, 10.75, 13.5, 2.5);
+  g.fillRect(3, 16, 2.5, 2.5);
+  g.fillRect(7.5, 16, 13.5, 2.5);
+  g.restore();
+}
+
+// Exact trolley symbol matching app homepage
+function drawCanvasCartIcon(g, cx, cy, size = 40, color = "#455F6D"){
+  g.save();
+  g.fillStyle = color;
+  const s = size / 24;
+  g.translate(cx - (size / 2), cy - (size / 2));
+  g.scale(s, s);
+
+  // Two wheels
+  g.beginPath();
+  g.arc(7, 20, 2, 0, Math.PI * 2);
+  g.arc(17, 20, 2, 0, Math.PI * 2);
+  g.fill();
+
+  // Cart basket & handle
+  g.beginPath();
+  g.moveTo(7.17, 14.75);
+  g.lineTo(7.2, 14.63);
+  g.lineTo(8.1, 13);
+  g.lineTo(15.55, 13);
+  g.lineTo(17.3, 11.97);
+  g.lineTo(20.88, 5.48);
+  g.arc(20, 4, 1, 0, Math.PI * 1.5);
+  g.lineTo(5.21, 4);
+  g.lineTo(4.27, 2);
+  g.lineTo(1, 2);
+  g.lineTo(1, 4);
+  g.lineTo(3, 4);
+  g.lineTo(6.6, 11.59);
+  g.lineTo(5.25, 14.03);
+  g.arc(7, 17, 2, Math.PI * 0.5, Math.PI);
+  g.lineTo(19, 17);
+  g.lineTo(19, 15);
+  g.lineTo(7.42, 15);
+  g.arc(7.17, 14.75, 0.25, 0, Math.PI * 2);
+  g.closePath();
+  g.fill();
+
   g.restore();
 }
 
@@ -905,7 +1027,7 @@ async function draw4K(rows, dateStr){
   const boxW = R - L;
   const HF = '"Noto Sans Devanagari","Segoe UI",sans-serif';
 
-  // 1. Normal Background (No Zoom)
+  // 1. Background
   g.fillStyle = "#EAF1F4";
   g.fillRect(0, 0, W, H);
 
@@ -930,36 +1052,56 @@ async function draw4K(rows, dateStr){
     g.drawImage(bgImg, dx, dy, dw, dh);
   }
 
-  // 2. Normal Top Shop Heading Box (No Zoom) + icon.svg
+  // 2. Transparent White-Tinted Top Heading Box + Fine Non-Blur Dark Line Shadow
   const topY = 24;
-  const topH = 152;
-  drawNeuBox(g, L, topY, boxW, topH, 28, "#F8FAFB", "rgba(255,255,255,0.92)");
+  const topH = 156;
+  drawFloatingLineBox(g, L, topY, boxW, topH, 28, "rgba(248, 250, 251, 0.36)", "rgba(255, 255, 255, 0.80)");
 
-  const badgeCx = L + 84;
+  // Bigger Round Logo (icon.svg)
+  const badgeCx = L + 88;
   const badgeCy = topY + topH / 2;
-  drawNeuBox(g, badgeCx - 48, badgeCy - 48, 96, 96, 48, "#F8FAFB", "#DCE7EC");
+  const logoRadius = 56;
+
+  drawRoundedRectPath(g, badgeCx - logoRadius, badgeCy - logoRadius + 2, logoRadius * 2, logoRadius * 2, logoRadius);
+  g.fillStyle = "rgba(32, 44, 53, 0.18)";
+  g.fill();
+
+  g.save();
+  g.beginPath();
+  g.arc(badgeCx, badgeCy, logoRadius, 0, Math.PI * 2);
+  g.fillStyle = "rgba(248, 250, 251, 0.88)";
+  g.fill();
+  g.clip();
 
   if(iconSvgImg){
-    const iconSize = 68;
-    g.drawImage(iconSvgImg, badgeCx - iconSize / 2, badgeCy - iconSize / 2, iconSize, iconSize);
+    g.drawImage(iconSvgImg, badgeCx - logoRadius, badgeCy - logoRadius, logoRadius * 2, logoRadius * 2);
   }else{
     g.fillStyle = "#455F6D";
-    g.fillRect(badgeCx - 20, badgeCy - 14, 40, 28);
+    g.fillRect(badgeCx - 24, badgeCy - 16, 48, 32);
   }
+  g.restore();
 
+  g.beginPath();
+  g.arc(badgeCx, badgeCy, logoRadius, 0, Math.PI * 2);
+  g.strokeStyle = "rgba(255, 255, 255, 0.92)";
+  g.lineWidth = 2.5;
+  g.stroke();
+
+  // Shop Name & Location
   g.fillStyle = "#202C35";
   g.textBaseline = "alphabetic";
   g.textAlign = "left";
-  g.font = `bold 48px ${HF}`;
-  g.fillText(SHOP, L + 148, topY + 68);
+  g.font = `bold 49px ${HF}`;
+  g.fillText(SHOP, L + 162, topY + 70);
 
-  drawCanvasLocationPin(g, L + 160, topY + 105, 26, "#455F6D");
+  drawCanvasLocationPin(g, L + 174, topY + 108, 27, "#455F6D");
   g.fillStyle = "#647783";
-  g.font = `600 28px ${HF}`;
-  g.fillText(PLACE, L + 180, topY + 114);
+  g.font = `bold 29px ${HF}`;
+  g.fillText(PLACE, L + 195, topY + 117);
 
+  // Divider & Exact Trolley Symbol + Count Badge
   const divX = R - 134;
-  g.strokeStyle = "#C7D6DE";
+  g.strokeStyle = "rgba(100, 119, 131, 0.35)";
   g.lineWidth = 2;
   g.beginPath();
   g.moveTo(divX, topY + 24);
@@ -968,87 +1110,91 @@ async function draw4K(rows, dateStr){
 
   const cartCx = R - 68;
   const cartCy = topY + topH / 2 + 4;
-  g.fillStyle = "#455F6D";
-  g.fillRect(cartCx - 20, cartCy - 6, 34, 16);
-  g.beginPath();
-  g.arc(cartCx - 11, cartCy + 16, 5, 0, Math.PI * 2);
-  g.arc(cartCx + 9, cartCy + 16, 5, 0, Math.PI * 2);
-  g.fill();
+  drawCanvasCartIcon(g, cartCx, cartCy, 42, "#455F6D");
 
   g.beginPath();
-  g.arc(cartCx + 16, cartCy - 16, 18, 0, Math.PI * 2);
+  g.arc(cartCx + 17, cartCy - 17, 18.5, 0, Math.PI * 2);
   g.fillStyle = "#455F6D";
   g.fill();
   g.fillStyle = "#FFFFFF";
-  g.font = `bold 20px ${HF}`;
+  g.font = `bold 20.5px ${HF}`;
   g.textAlign = "center";
   g.textBaseline = "middle";
-  g.fillText(String(rows.length), cartCx + 16, cartCy - 15);
+  g.fillText(String(rows.length), cartCx + 17, cartCy - 16);
 
-  // 3. Normal Date & Total List Bar (No Zoom)
-  const metaY = 192;
+  // 3. Date & Total List Bar with Calendar + Three-Line Symbol
+  const metaY = 194;
   const metaH = 66;
-  drawNeuBox(g, L, metaY, boxW, metaH, metaH / 2, "#F8FAFB", "rgba(255,255,255,0.92)");
+  drawFloatingLineBox(g, L, metaY, boxW, metaH, metaH / 2, "rgba(248, 250, 251, 0.56)", "rgba(255, 255, 255, 0.85)");
 
+  drawCanvasCalendarIcon(g, L + 28, metaY + (metaH - 28) / 2, 28, "#455F6D");
   g.fillStyle = "#455F6D";
   g.textAlign = "left";
   g.textBaseline = "middle";
-  g.font = `bold 30px ${HF}`;
-  g.fillText(`दिनांक: ${dateStr}`, L + 32, metaY + metaH / 2 + 1);
+  g.font = `bold 31px ${HF}`;
+  g.fillText(`दिनांक: ${dateStr}`, L + 68, metaY + metaH / 2 + 1);
 
-  const pillW = 286;
+  const pillW = 304;
   const pillX = R - pillW - 4;
   drawRoundedRectPath(g, pillX, metaY + 4, pillW, metaH - 8, (metaH - 8) / 2);
   g.fillStyle = "#455F6D";
   g.fill();
 
   g.fillStyle = "#FFFFFF";
-  g.font = `bold 30px ${HF}`;
-  g.textAlign = "center";
-  g.fillText(`कुल सूची: ${rows.length}`, pillX + pillW / 2 - 12, metaY + metaH / 2 + 1);
+  g.font = `bold 30.5px ${HF}`;
+  g.textAlign = "left";
+  g.fillText(`कुल सूची: ${rows.length}`, pillX + 24, metaY + metaH / 2 + 1);
+  drawCanvasThreeLinesIcon(g, pillX + pillW - 44, metaY + (metaH - 24) / 2, 24, "#FFFFFF");
 
-  // 4. Normal Table Heading Box (No Zoom)
+  // 4. Table Heading Box
   const thY = 276;
   const thH = 78;
-  drawNeuBox(g, L, thY, boxW, thH, 24, "#607D8B", "rgba(255,255,255,0.75)");
+  drawFloatingLineBox(g, L, thY, boxW, thH, 24, "#607D8B", "rgba(255, 255, 255, 0.72)");
 
   g.fillStyle = "#FFFFFF";
-  g.font = `bold 32px ${HF}`;
+  g.font = `bold 32.5px ${HF}`;
   g.textBaseline = "middle";
   g.textAlign = "left";
   g.fillText("No.", L + 32, thY + thH / 2 + 1);
-  g.fillText("सामान सूची", L + 148, thY + thH / 2 + 1);
+  g.fillText("सामान सूची", L + 146, thY + thH / 2 + 1);
 
+  // Quantity closer to Unit
+  const qtyColX = 765;
+  const unitColX = R - 95;
   g.textAlign = "center";
-  g.fillText("Quantity", 675, thY + thH / 2 + 1);
-  g.fillText("Unit", R - 105, thY + thH / 2 + 1);
+  g.fillText("Quantity", qtyColX, thY + thH / 2 + 1);
+  g.fillText("Unit", unitColX, thY + thH / 2 + 1);
 
-  // 5. Clean Neomorphic Item Rows (Bigger Saman List Font Size)
+  // 5. Bold Kramank, Saman List, Quantity & Unit (+2% Font Size, Quantity Close to Unit)
   for(let i = 0; i < rows.length; i++){
     const r = rows[i];
     const y = startY + (i * rowH);
     const cy = y + (pillHeight / 2);
 
-    drawNeuBox(g, L, y, boxW, pillHeight, 24, "#F8FAFB", "rgba(255,255,255,0.94)");
+    drawNeuRowBox(g, L, y, boxW, pillHeight, 24, "#F8FAFB");
 
-    g.fillStyle = "#647783";
-    g.font = `bold 34px ${HF}`;
+    // Kramank (No.) - Bold
+    g.fillStyle = "#455F6D";
+    g.font = `bold 35px ${HF}`;
     g.textAlign = "left";
     g.textBaseline = "middle";
     g.fillText(String(i + 1).padStart(2, "0"), L + 32, cy + 1);
 
+    // Saman List - Bold & Bigger
     g.fillStyle = "#202C35";
-    g.font = `bold 40px ${HF}`;
-    g.fillText(r.name, L + 148, cy + 1, 415);
+    g.font = `bold 41px ${HF}`;
+    g.fillText(r.name, L + 146, cy + 1, 515);
 
+    // Quantity - Bold & Close to Unit
     g.fillStyle = "#202C35";
-    g.font = `bold 38px ${HF}`;
+    g.font = `bold 39px ${HF}`;
     g.textAlign = "center";
-    g.fillText(String(r.qty), 675, cy + 1);
+    g.fillText(String(r.qty), qtyColX, cy + 1);
 
-    const uW = 142;
+    // Unit - Bold
+    const uW = 136;
     const uH = 50;
-    const uX = R - 176;
+    const uX = unitColX - (uW / 2);
     drawRoundedRectPath(g, uX, cy - (uH / 2), uW, uH, 16);
     g.fillStyle = "#EAF1F4";
     g.fill();
@@ -1057,7 +1203,7 @@ async function draw4K(rows, dateStr){
     g.stroke();
 
     g.fillStyle = "#455F6D";
-    g.font = `bold 27px ${HF}`;
+    g.font = `bold 28px ${HF}`;
     g.fillText(String(r.unit), uX + (uW / 2), cy + 1);
   }
 

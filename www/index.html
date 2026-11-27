@@ -41,7 +41,7 @@ body{
   padding:12px 14px 28px;
 }
 
-/* Top Heading Box: Exact Same Spot App BG Cutout + Fine Non-Blur Dark Line Shadow */
+/* Solid White Top Heading Box with Light Pattern & Fine Non-Blur Dark Line Shadow */
 .top-card{
   position:relative;
   overflow:hidden;
@@ -52,12 +52,20 @@ body{
   padding:12px 14px;
   border-radius:20px;
   background-color:var(--card);
+  border:1px solid rgba(255, 255, 255, 0.92);
+  box-shadow:var(--float-line-shadow);
+}
+.top-card::before{
+  content:"";
+  position:absolute;
+  inset:0;
   background-image:var(--app-bg);
   background-size:cover;
   background-position:center top;
   background-attachment:fixed;
-  border:1px solid rgba(255, 255, 255, 0.86);
-  box-shadow:var(--float-line-shadow);
+  opacity:0.15;
+  pointer-events:none;
+  z-index:0;
 }
 .top-card > *{
   position:relative;
@@ -74,9 +82,9 @@ body{
   height:66px;
   flex-shrink:0;
   border-radius:50%;
-  background:rgba(248, 250, 251, 0.90);
-  border:1.5px solid rgba(255, 255, 255, 0.95);
-  box-shadow:0 2px 0 rgba(32, 44, 53, 0.20);
+  background:var(--card);
+  border:1.5px solid var(--soft-blue);
+  box-shadow:0 2px 0 rgba(32, 44, 53, 0.18);
   display:flex;
   align-items:center;
   justify-content:center;
@@ -97,7 +105,6 @@ body{
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
-  text-shadow:0 1px 0 rgba(255, 255, 255, 0.85);
 }
 .shop-place{
   display:flex;
@@ -119,7 +126,7 @@ body{
   display:flex;
   align-items:center;
   padding-left:12px;
-  border-left:1px solid rgba(100, 119, 131, 0.35);
+  border-left:1px solid var(--divider);
   flex-shrink:0;
 }
 .cart-badge{
@@ -137,10 +144,10 @@ body{
   display:flex;
   align-items:center;
   justify-content:center;
-  box-shadow:0 1px 0 rgba(32, 44, 53, 0.3);
+  box-shadow:0 1px 0 rgba(32, 44, 53, 0.25);
 }
 
-/* Date & Kul Suchi Bar with Exact Spot App BG Cutout */
+/* Solid White Date & Kul Suchi Bar with Light Pattern */
 .date-bar{
   position:relative;
   overflow:hidden;
@@ -149,16 +156,24 @@ body{
   margin:12px 0 10px;
   border-radius:999px;
   background-color:var(--card);
-  background-image:var(--app-bg);
-  background-size:cover;
-  background-position:center top;
-  background-attachment:fixed;
-  border:1px solid rgba(255, 255, 255, 0.88);
+  border:1px solid rgba(255, 255, 255, 0.92);
   box-shadow:var(--float-line-shadow);
   display:flex;
   align-items:center;
   justify-content:space-between;
   padding:3px;
+}
+.date-bar::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background-image:var(--app-bg);
+  background-size:cover;
+  background-position:center top;
+  background-attachment:fixed;
+  opacity:0.12;
+  pointer-events:none;
+  z-index:0;
 }
 .date-bar > *{
   position:relative;
@@ -173,7 +188,6 @@ body{
   font-size:16px;
   font-weight:700;
   white-space:nowrap;
-  text-shadow:0 1px 0 rgba(255, 255, 255, 0.85);
 }
 .date-left svg{
   width:20px;
@@ -202,7 +216,7 @@ body{
   flex-shrink:0;
 }
 
-/* Table Heading Box with Exact Spot App BG Cutout */
+/* Table Heading Box with Light Pattern */
 .th-bar{
   position:relative;
   overflow:hidden;
@@ -210,20 +224,30 @@ body{
   grid-template-columns:44px 1fr 82px 68px;
   align-items:center;
   background-color:var(--primary);
-  background-image:
-    linear-gradient(145deg, rgba(96, 125, 139, 0.86), rgba(69, 95, 109, 0.90)),
-    var(--app-bg);
-  background-size:100% 100%, cover;
-  background-position:center, center top;
-  background-attachment:scroll, fixed;
   color:var(--card);
   border-radius:16px;
   padding:11px 14px;
   font-size:15.5px;
   font-weight:700;
-  border:1px solid rgba(255, 255, 255, 0.65);
+  border:1px solid rgba(255, 255, 255, 0.72);
   box-shadow:var(--float-line-shadow);
   margin-bottom:10px;
+}
+.th-bar::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background-image:var(--app-bg);
+  background-size:cover;
+  background-position:center top;
+  background-attachment:fixed;
+  opacity:0.10;
+  pointer-events:none;
+  z-index:0;
+}
+.th-bar > *{
+  position:relative;
+  z-index:1;
 }
 .th-c{text-align:center}
 
@@ -867,9 +891,9 @@ function drawRoundedRectPath(g, x, y, w, h, r){
   g.closePath();
 }
 
-// Crops exact corresponding area of app_bg.png using exact scaleX & scaleY
-// and draws a box with fine non-blur dark line shadow below
-function drawBgCutoutBox(g, x, y, w, h, r, bgImg, fullDraw, strokeStyle = "rgba(255,255,255,0.86)", tintColor = null){
+// Solid base color + very light pattern overlay + fine non-blur dark line shadow below
+function drawSolidWithLightPatternBox(g, x, y, w, h, r, solidFill, bgImg, fullDraw, patternAlpha = 0.14, strokeStyle = "rgba(255,255,255,0.92)"){
+  // Fine crisp dark line shadow below (no blur)
   drawRoundedRectPath(g, x, y + 3, w, h, r);
   g.fillStyle = "rgba(32, 44, 53, 0.24)";
   g.fill();
@@ -882,10 +906,12 @@ function drawBgCutoutBox(g, x, y, w, h, r, bgImg, fullDraw, strokeStyle = "rgba(
   drawRoundedRectPath(g, x, y, w, h, r);
   g.clip();
 
-  g.fillStyle = "#EAF1F4";
+  // Solid base color first
+  g.fillStyle = solidFill;
   g.fillRect(x, y, w, h);
 
-  if(bgImg && fullDraw && fullDraw.dw > 0 && fullDraw.dh > 0){
+  // Light pattern on top
+  if(bgImg && fullDraw && fullDraw.dw > 0 && fullDraw.dh > 0 && patternAlpha > 0){
     const scaleX = bgImg.width / fullDraw.dw;
     const scaleY = bgImg.height / fullDraw.dh;
     const sx = Math.max(0, (x - fullDraw.dx) * scaleX);
@@ -893,13 +919,11 @@ function drawBgCutoutBox(g, x, y, w, h, r, bgImg, fullDraw, strokeStyle = "rgba(
     const sw = Math.min(bgImg.width - sx, w * scaleX);
     const sh = Math.min(bgImg.height - sy, h * scaleY);
     if(sw > 0 && sh > 0){
+      g.save();
+      g.globalAlpha = patternAlpha;
       g.drawImage(bgImg, sx, sy, sw, sh, x, y, w, h);
+      g.restore();
     }
-  }
-
-  if(tintColor){
-    g.fillStyle = tintColor;
-    g.fillRect(x, y, w, h);
   }
 
   g.restore();
@@ -1100,10 +1124,10 @@ async function draw4K(rows, dateStr){
     g.drawImage(bgImg, dx, dy, dw, dh);
   }
 
-  // 2. Top Heading Box: Exact Same Spot App BG Cutout + Fine Non-Blur Dark Line Shadow
+  // 2. Solid White Top Heading Box with Light Pattern & Fine Non-Blur Dark Line Shadow
   const topY = 24;
   const topH = 156;
-  drawBgCutoutBox(g, L, topY, boxW, topH, 28, bgImg, fullDraw, "rgba(255, 255, 255, 0.88)");
+  drawSolidWithLightPatternBox(g, L, topY, boxW, topH, 28, "#F8FAFB", bgImg, fullDraw, 0.15, "rgba(255, 255, 255, 0.92)");
 
   // Bigger Round Logo (icon.svg)
   const badgeCx = L + 88;
@@ -1111,13 +1135,13 @@ async function draw4K(rows, dateStr){
   const logoRadius = 56;
 
   drawRoundedRectPath(g, badgeCx - logoRadius, badgeCy - logoRadius + 2, logoRadius * 2, logoRadius * 2, logoRadius);
-  g.fillStyle = "rgba(32, 44, 53, 0.18)";
+  g.fillStyle = "rgba(32, 44, 53, 0.16)";
   g.fill();
 
   g.save();
   g.beginPath();
   g.arc(badgeCx, badgeCy, logoRadius, 0, Math.PI * 2);
-  g.fillStyle = "rgba(248, 250, 251, 0.90)";
+  g.fillStyle = "#F8FAFB";
   g.fill();
   g.clip();
 
@@ -1131,7 +1155,7 @@ async function draw4K(rows, dateStr){
 
   g.beginPath();
   g.arc(badgeCx, badgeCy, logoRadius, 0, Math.PI * 2);
-  g.strokeStyle = "rgba(255, 255, 255, 0.92)";
+  g.strokeStyle = "#DCE7EC";
   g.lineWidth = 2.5;
   g.stroke();
 
@@ -1149,7 +1173,7 @@ async function draw4K(rows, dateStr){
 
   // Divider & Exact Trolley Symbol + Count Badge
   const divX = R - 134;
-  g.strokeStyle = "rgba(100, 119, 131, 0.35)";
+  g.strokeStyle = "#C7D6DE";
   g.lineWidth = 2;
   g.beginPath();
   g.moveTo(divX, topY + 24);
@@ -1170,10 +1194,10 @@ async function draw4K(rows, dateStr){
   g.textBaseline = "middle";
   g.fillText(String(rows.length), cartCx + 17, cartCy - 16);
 
-  // 3. Date & Total List Bar with Exact Spot App BG Cutout + Calendar + Three-Line Symbol
+  // 3. Solid White Date & Total List Bar with Light Pattern
   const metaY = 194;
   const metaH = 66;
-  drawBgCutoutBox(g, L, metaY, boxW, metaH, metaH / 2, bgImg, fullDraw, "rgba(255, 255, 255, 0.88)");
+  drawSolidWithLightPatternBox(g, L, metaY, boxW, metaH, metaH / 2, "#F8FAFB", bgImg, fullDraw, 0.12, "rgba(255, 255, 255, 0.92)");
 
   drawCanvasCalendarIcon(g, L + 28, metaY + (metaH - 28) / 2, 28, "#455F6D");
   g.fillStyle = "#455F6D";
@@ -1194,10 +1218,10 @@ async function draw4K(rows, dateStr){
   g.fillText(`कुल सूची: ${rows.length}`, pillX + 24, metaY + metaH / 2 + 1);
   drawCanvasThreeLinesIcon(g, pillX + pillW - 44, metaY + (metaH - 24) / 2, 24, "#FFFFFF");
 
-  // 4. Table Heading Box
+  // 4. Table Heading Box with Light Pattern
   const thY = 276;
   const thH = 78;
-  drawBgCutoutBox(g, L, thY, boxW, thH, 24, bgImg, fullDraw, "rgba(255, 255, 255, 0.72)", "rgba(96, 125, 139, 0.88)");
+  drawSolidWithLightPatternBox(g, L, thY, boxW, thH, 24, "#607D8B", bgImg, fullDraw, 0.10, "rgba(255, 255, 255, 0.72)");
 
   g.fillStyle = "#FFFFFF";
   g.font = `bold 32.5px ${HF}`;

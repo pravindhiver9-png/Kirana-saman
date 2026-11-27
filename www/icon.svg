@@ -1,31 +1,48 @@
 <svg viewBox="0 0 240 240" width="1024" height="1024" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <radialGradient id="cBg" cx="35%" cy="28%" r="72%">
-      <stop offset="0%" stop-color="#FFFFFF"/>
-      <stop offset="72%" stop-color="#F2F8FD"/>
-      <stop offset="100%" stop-color="#DCE7EC"/>
-    </radialGradient>
-    <linearGradient id="dShop" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#607D8B"/>
-      <stop offset="100%" stop-color="#455F6D"/>
+    <linearGradient id="bgSky" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#EAF5FC"/>
+      <stop offset="100%" stop-color="#DCECF7"/>
     </linearGradient>
-    <linearGradient id="lAwning" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#DCE7EC"/>
-      <stop offset="100%" stop-color="#F8FAFB"/>
+    <radialGradient id="discGrad" cx="38%" cy="32%" r="68%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="75%" stop-color="#F6FAFD"/>
+      <stop offset="100%" stop-color="#E3EFF8"/>
+    </radialGradient>
+    <linearGradient id="shopDark" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3E6B89"/>
+      <stop offset="100%" stop-color="#2D526B"/>
+    </linearGradient>
+    <linearGradient id="shopLight" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#CBE3F3"/>
+      <stop offset="100%" stop-color="#A8CBE3"/>
     </linearGradient>
   </defs>
-  <rect width="240" height="240" fill="#EAF1F4"/>
-  <circle cx="120" cy="120" r="102" fill="url(#cBg)" stroke="#FFFFFF" stroke-width="4"/>
-  <rect x="66" y="102" width="108" height="60" rx="4" fill="url(#dShop)"/>
-  <rect x="66" y="102" width="108" height="10" fill="#202C35" opacity="0.24"/>
-  <path d="M104 162 L104 134 Q104 127 111 127 L129 127 Q136 127 136 134 L136 162 Z" fill="#F8FAFB"/>
-  <path d="M56 96 L72 62 Q75 57 81 57 L159 57 Q165 57 168 62 L184 96 Z" fill="url(#dShop)"/>
-  <polygon points="94,57 111,57 107,96 84,96" fill="url(#lAwning)"/>
-  <polygon points="129,57 146,57 156,96 133,96" fill="url(#lAwning)"/>
-  <path d="M56 96 L81.6 96 L81.6 100 A12.8 12.8 0 0 1 56 100 Z" fill="url(#lAwning)"/>
-  <path d="M81.6 96 L107.2 96 L107.2 100 A12.8 12.8 0 0 1 81.6 100 Z" fill="url(#lAwning)"/>
-  <path d="M107.2 96 L132.8 96 L132.8 100 A12.8 12.8 0 0 1 107.2 100 Z" fill="url(#lAwning)"/>
-  <path d="M132.8 96 L158.4 96 L158.4 100 A12.8 12.8 0 0 1 132.8 100 Z" fill="url(#lAwning)"/>
-  <path d="M158.4 96 L184 96 L184 100 A12.8 12.8 0 0 1 158.4 100 Z" fill="url(#lAwning)"/>
-  <rect x="58" y="159" width="124" height="13" rx="6.5" fill="#455F6D"/>
+
+  <rect width="240" height="240" fill="url(#bgSky)"/>
+
+  <circle cx="120" cy="124" r="96" fill="#B8D4E8" opacity="0.45"/>
+  <circle cx="120" cy="120" r="94" fill="url(#discGrad)" stroke="#D4E6F3" stroke-width="3"/>
+
+  <!-- Shop Body -->
+  <rect x="68" y="104" width="104" height="58" rx="4" fill="url(#shopDark)"/>
+  <rect x="68" y="104" width="104" height="9" fill="#1E394B" opacity="0.28"/>
+
+  <!-- Door -->
+  <path d="M105 162 L105 135 Q105 128 112 128 L128 128 Q135 128 135 135 L135 162 Z" fill="#F6FAFD"/>
+
+  <!-- Awning Top Slope -->
+  <path d="M56 96 L73 60 Q75 56 80 56 L160 56 Q165 56 167 60 L184 96 Z" fill="url(#shopDark)"/>
+  <polygon points="92,56 109,56 105,96 82,96" fill="url(#shopLight)"/>
+  <polygon points="131,56 148,56 158,96 135,96" fill="url(#shopLight)"/>
+
+  <!-- Scalloped Awning Bottom Edge -->
+  <path d="M56 96 H81.6 V100 A12.8 12.8 0 0 1 56 100 Z" fill="url(#shopLight)"/>
+  <path d="M81.6 96 H107.2 V100 A12.8 12.8 0 0 1 81.6 100 Z" fill="url(#shopDark)"/>
+  <path d="M107.2 96 H132.8 V100 A12.8 12.8 0 0 1 107.2 100 Z" fill="url(#shopLight)"/>
+  <path d="M132.8 96 H158.4 V100 A12.8 12.8 0 0 1 132.8 100 Z" fill="url(#shopDark)"/>
+  <path d="M158.4 96 H184 V100 A12.8 12.8 0 0 1 158.4 100 Z" fill="url(#shopLight)"/>
+
+  <!-- Base Sill -->
+  <rect x="57" y="159" width="126" height="14" rx="7" fill="url(#shopDark)"/>
 </svg>

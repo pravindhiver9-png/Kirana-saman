@@ -42,7 +42,7 @@ body{
   padding:12px 14px 28px;
 }
 
-/* Top Heading Box: Solid Card Base + pattern.png (25% opacity) + Fine Non-Blur Dark Line Shadow */
+/* Top Heading Box: Solid Card Base + pattern.png (75% opacity) + Fine Non-Blur Dark Line Shadow */
 .top-card{
   position:relative;
   overflow:hidden;
@@ -61,10 +61,10 @@ body{
   position:absolute;
   inset:0;
   background-image:var(--header-pattern);
-  background-size:100% 100%;
+  background-size:cover;
   background-position:center;
   background-repeat:no-repeat;
-  opacity:0.25;
+  opacity:0.75;
   pointer-events:none;
   z-index:0;
 }
@@ -868,8 +868,9 @@ function drawRoundedRectPath(g, x, y, w, h, r){
   g.closePath();
 }
 
-// Draws card base + transparent pattern.png at 25% opacity + fine non-blur dark line shadow below
-function drawTopPatternCard(g, x, y, w, h, r, patternImg, alpha = 0.25){
+// Draws card base + cover-scaled pattern.png at 75% opacity
+// + fine non-blur dark line shadow below
+function drawTopPatternCard(g, x, y, w, h, r, patternImg, alpha = 0.75, patternScale = 1){
   drawRoundedRectPath(g, x, y + 3, w, h, r);
   g.fillStyle = "rgba(32, 44, 53, 0.24)";
   g.fill();
@@ -885,10 +886,23 @@ function drawTopPatternCard(g, x, y, w, h, r, patternImg, alpha = 0.25){
   g.fillStyle = "#F8FAFB";
   g.fillRect(x, y, w, h);
 
-  if(patternImg){
+  if(patternImg && patternImg.width > 0 && patternImg.height > 0){
+    const imgRatio = patternImg.width / patternImg.height;
+    const boxRatio = w / h;
+    let dw, dh;
+    if(imgRatio > boxRatio){
+      dh = h * patternScale;
+      dw = dh * imgRatio;
+    }else{
+      dw = w * patternScale;
+      dh = dw / imgRatio;
+    }
+    const dx = x + (w - dw) / 2;
+    const dy = y + (h - dh) / 2;
+
     g.save();
     g.globalAlpha = alpha;
-    g.drawImage(patternImg, x, y, w, h);
+    g.drawImage(patternImg, dx, dy, dw, dh);
     g.restore();
   }
 
@@ -1130,10 +1144,10 @@ async function draw4K(rows, dateStr){
     g.drawImage(bgImg, dx, dy, dw, dh);
   }
 
-  // 2. Top Heading Box with pattern.png (25% opacity) + Fine Non-Blur Dark Line Shadow
+  // 2. Top Heading Box with cover-scaled pattern.png (75% opacity) + Fine Non-Blur Dark Line Shadow
   const topY = 24;
   const topH = 156;
-  drawTopPatternCard(g, L, topY, boxW, topH, 28, patternImg, 0.25);
+  drawTopPatternCard(g, L, topY, boxW, topH, 28, patternImg, 0.75, 1);
 
   // Bigger Round Logo (icon.svg)
   const badgeCx = L + 88;

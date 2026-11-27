@@ -42,7 +42,7 @@ body{
   padding:12px 14px 28px;
 }
 
-/* Top Heading Box: Solid White Base + 25% Opacity pattern.png + Fine Non-Blur Dark Line Shadow */
+/* Top Heading Box: Solid Card Base + pattern.png (25% opacity) + Fine Non-Blur Dark Line Shadow */
 .top-card{
   position:relative;
   overflow:hidden;
@@ -64,7 +64,6 @@ body{
   background-size:100% 100%;
   background-position:center;
   background-repeat:no-repeat;
-  mix-blend-mode:screen;
   opacity:0.25;
   pointer-events:none;
   z-index:0;
@@ -869,10 +868,8 @@ function drawRoundedRectPath(g, x, y, w, h, r){
   g.closePath();
 }
 
-// Draws solid white card with pattern.png at 25% opacity using 'screen' blend mode
-// and fine non-blur dark line shadow below
+// Draws card base + transparent pattern.png at 25% opacity + fine non-blur dark line shadow below
 function drawTopPatternCard(g, x, y, w, h, r, patternImg, alpha = 0.25){
-  // Fine crisp dark line shadow below (no blur)
   drawRoundedRectPath(g, x, y + 3, w, h, r);
   g.fillStyle = "rgba(32, 44, 53, 0.24)";
   g.fill();
@@ -885,14 +882,11 @@ function drawTopPatternCard(g, x, y, w, h, r, patternImg, alpha = 0.25){
   drawRoundedRectPath(g, x, y, w, h, r);
   g.clip();
 
-  // Solid card base
   g.fillStyle = "#F8FAFB";
   g.fillRect(x, y, w, h);
 
-  // Draw pattern.png with screen composite so black disappears and flowers/leaves show lightly
   if(patternImg){
     g.save();
-    g.globalCompositeOperation = "screen";
     g.globalAlpha = alpha;
     g.drawImage(patternImg, x, y, w, h);
     g.restore();

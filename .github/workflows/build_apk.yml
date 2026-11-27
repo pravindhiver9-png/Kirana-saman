@@ -8,12 +8,73 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with: { node-version: 20 }
+        with:
+          node-version: 20
       - uses: actions/setup-java@v4
-        with: { distribution: temurin, java-version: 17 }
+        with:
+          distribution: temurin
+          java-version: 17
       - run: npm install
       - run: npx cap add android
       - run: npx cap sync android
+      - name: Generate Android Launcher Icons from SVG
+        run: |
+          npm install --no-save sharp
+          node -e '
+          const fs = require("fs");
+          const path = require("path");
+          const sharp = require("sharp");
+
+          const svg = `<svg viewBox="0 0 240 240" width="1024" height="1024" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="cBg" cx="35%" cy="28%" r="72%">
+                <stop offset="0%" stop-color="#FFFFFF"/>
+                <stop offset="72%" stop-color="#F2F8FD"/>
+                <stop offset="100%" stop-color="#DCE7EC"/>
+              </radialGradient>
+              <linearGradient id="dShop" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#607D8B"/>
+                <stop offset="100%" stop-color="#455F6D"/>
+              </linearGradient>
+              <linearGradient id="lAwning" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#DCE7EC"/>
+                <stop offset="100%" stop-color="#F8FAFB"/>
+              </linearGradient>
+            </defs>
+            <rect width="240" height="240" fill="#EAF1F4"/>
+            <circle cx="120" cy="120" r="102" fill="url(#cBg)" stroke="#FFFFFF" stroke-width="4"/>
+            <rect x="66" y="102" width="108" height="60" rx="4" fill="url(#dShop)"/>
+            <rect x="66" y="102" width="108" height="10" fill="#202C35" opacity="0.24"/>
+            <path d="M104 162 L104 134 Q104 127 111 127 L129 127 Q136 127 136 134 L136 162 Z" fill="#F8FAFB"/>
+            <path d="M56 96 L72 62 Q75 57 81 57 L159 57 Q165 57 168 62 L184 96 Z" fill="url(#dShop)"/>
+            <polygon points="94,57 111,57 107,96 84,96" fill="url(#lAwning)"/>
+            <polygon points="129,57 146,57 156,96 133,96" fill="url(#lAwning)"/>
+            <path d="M56 96 L81.6 96 L81.6 100 A12.8 12.8 0 0 1 56 100 Z" fill="url(#lAwning)"/>
+            <path d="M81.6 96 L107.2 96 L107.2 100 A12.8 12.8 0 0 1 81.6 100 Z" fill="url(#lAwning)"/>
+            <path d="M107.2 96 L132.8 96 L132.8 100 A12.8 12.8 0 0 1 107.2 100 Z" fill="url(#lAwning)"/>
+            <path d="M132.8 96 L158.4 96 L158.4 100 A12.8 12.8 0 0 1 132.8 100 Z" fill="url(#lAwning)"/>
+            <path d="M158.4 96 L184 96 L184 100 A12.8 12.8 0 0 1 158.4 100 Z" fill="url(#lAwning)"/>
+            <rect x="58" y="159" width="124" height="13" rx="6.5" fill="#455F6D"/>
+          </svg>`;
+
+          const sizes = {
+            "mipmap-mdpi": 48,
+            "mipmap-hdpi": 72,
+            "mipmap-xhdpi": 96,
+            "mipmap-xxhdpi": 144,
+            "mipmap-xxxhdpi": 192
+          };
+
+          (async () => {
+            for (const [folder, px] of Object.entries(sizes)) {
+              const dir = path.join("android/app/src/main/res", folder);
+              fs.mkdirSync(dir, { recursive: true });
+              const buf = await sharp(Buffer.from(svg)).resize(px, px).png().toBuffer();
+              fs.writeFileSync(path.join(dir, "ic_launcher.png"), buf);
+              fs.writeFileSync(path.join(dir, "ic_launcher_round.png"), buf);
+            }
+          })();
+          '
       - run: cd android && chmod +x gradlew && ./gradlew assembleDebug
       - uses: actions/upload-artifact@v4
         with:

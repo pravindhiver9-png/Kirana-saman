@@ -17,9 +17,9 @@
   --divider:#C7D6DE;
   --delete:#E76B64;
   --app-bg:url("app_bg.png");
-  --dark-around:0 0 14px rgba(32, 44, 53, 0.30), 0 6px 16px rgba(32, 44, 53, 0.24);
-  --dark-around-sm:0 0 10px rgba(32, 44, 53, 0.24), 0 4px 10px rgba(32, 44, 53, 0.18);
-  --neu-inset:inset 3px 3px 7px rgba(32, 44, 53, 0.22), inset -3px -3px 7px rgba(255, 255, 255, 0.85);
+  --neu-card:7px 7px 14px rgba(155, 178, 191, 0.42), -7px -7px 14px rgba(255, 255, 255, 0.90);
+  --neu-sm:4px 4px 10px rgba(155, 178, 191, 0.38), -4px -4px 10px rgba(255, 255, 255, 0.88);
+  --neu-inset:inset 3px 3px 6px rgba(155, 178, 191, 0.42), inset -3px -3px 6px rgba(255, 255, 255, 0.85);
 }
 *{box-sizing:border-box}
 body{
@@ -40,28 +40,17 @@ body{
   padding:12px 14px 28px;
 }
 
-/* Top Shop & Logo Card - Magnifies Exact Top Background Area */
+/* Normal Clean Neomorphic Top Shop & Logo Card (No Zoom) */
 .top-card{
-  position:relative;
-  overflow:hidden;
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap:10px;
   padding:12px 14px;
-  border-radius:24px;
-  background-color:rgba(248,250,251,0.55);
-  background-image:
-    linear-gradient(145deg, rgba(248,250,251,0.58), rgba(220,231,236,0.52)),
-    var(--app-bg);
-  background-size:100% 100%, 130% auto;
-  background-position:center, center 0%;
-  border:1.5px solid rgba(255,255,255,0.88);
-  box-shadow:var(--dark-around), inset 0 1px 1px rgba(255,255,255,0.9);
-}
-.top-card > *{
-  position:relative;
-  z-index:1;
+  border-radius:20px;
+  background:var(--card);
+  border:1px solid rgba(255,255,255,0.88);
+  box-shadow:var(--neu-card);
 }
 .shop-left{
   display:flex;
@@ -70,21 +59,22 @@ body{
   min-width:0;
 }
 .shop-logo-wrap{
-  width:60px;
-  height:60px;
+  width:56px;
+  height:56px;
   flex-shrink:0;
   border-radius:50%;
   background:var(--card);
-  border:1.5px solid var(--soft-blue);
-  box-shadow:var(--dark-around-sm);
+  border:1px solid var(--soft-blue);
+  box-shadow:var(--neu-sm);
   display:flex;
   align-items:center;
   justify-content:center;
   overflow:hidden;
 }
-.shop-logo{
-  width:60px;
-  height:60px;
+.shop-logo-img{
+  width:42px;
+  height:42px;
+  object-fit:contain;
   display:block;
 }
 .shop-name{
@@ -95,7 +85,6 @@ body{
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
-  text-shadow:0 1px 0 rgba(255,255,255,0.85);
 }
 .shop-place{
   display:flex;
@@ -117,7 +106,7 @@ body{
   display:flex;
   align-items:center;
   padding-left:12px;
-  border-left:1.2px solid var(--divider);
+  border-left:1px solid var(--divider);
   flex-shrink:0;
 }
 .cart-badge{
@@ -128,32 +117,25 @@ body{
   height:21px;
   padding:0 5px;
   border-radius:99px;
-  background:linear-gradient(145deg, var(--primary), var(--dark-primary));
+  background:var(--dark-primary);
   color:var(--card);
   font-size:12px;
   font-weight:700;
   display:flex;
   align-items:center;
   justify-content:center;
-  box-shadow:0 0 8px rgba(32,44,53,0.35);
+  box-shadow:var(--neu-sm);
 }
 
-/* Date & Kul Suchi Bar */
+/* Normal Clean Neomorphic Date & Kul Suchi Bar (No Zoom) */
 .date-bar{
-  position:relative;
-  overflow:hidden;
   width:100%;
   height:52px;
   margin:12px 0 10px;
   border-radius:999px;
-  background-color:rgba(248,250,251,0.78);
-  background-image:
-    linear-gradient(145deg, rgba(248,250,251,0.82), rgba(220,231,236,0.76)),
-    var(--app-bg);
-  background-size:100% 100%, 135% auto;
-  background-position:center, center 12%;
-  border:1.5px solid rgba(255,255,255,0.9);
-  box-shadow:var(--dark-around), inset 0 1px 1px rgba(255,255,255,0.9);
+  background:var(--card);
+  border:1px solid rgba(255,255,255,0.88);
+  box-shadow:var(--neu-card);
   display:flex;
   align-items:center;
   justify-content:space-between;
@@ -179,15 +161,14 @@ body{
   height:100%;
   padding:0 16px 0 18px;
   border-radius:999px;
-  background:linear-gradient(145deg, var(--primary), var(--dark-primary));
+  background:var(--dark-primary);
   color:var(--card);
   font-size:15px;
   font-weight:700;
   display:flex;
   align-items:center;
   gap:8px;
-  border:1px solid rgba(255,255,255,0.45);
-  box-shadow:0 0 10px rgba(32,44,53,0.32), inset 1px 1px 2px rgba(255,255,255,0.35);
+  box-shadow:var(--neu-sm);
   white-space:nowrap;
 }
 .count-pill svg{
@@ -197,26 +178,19 @@ body{
   flex-shrink:0;
 }
 
-/* Table Heading Box */
+/* Normal Clean Neomorphic Table Heading Box (No Zoom) */
 .th-bar{
-  position:relative;
-  overflow:hidden;
   display:grid;
   grid-template-columns:44px 1fr 82px 68px;
   align-items:center;
-  background-color:var(--primary);
-  background-image:
-    linear-gradient(145deg, rgba(96,125,139,0.88), rgba(69,95,109,0.92)),
-    var(--app-bg);
-  background-size:100% 100%, 140% auto;
-  background-position:center, center 18%;
+  background:var(--primary);
   color:var(--card);
-  border-radius:18px;
+  border-radius:16px;
   padding:11px 14px;
   font-size:15px;
   font-weight:700;
-  border:1.5px solid rgba(255,255,255,0.75);
-  box-shadow:var(--dark-around), inset 0 1px 1px rgba(255,255,255,0.45);
+  border:1px solid rgba(255,255,255,0.65);
+  box-shadow:var(--neu-card);
   margin-bottom:10px;
 }
 .th-c{text-align:center}
@@ -228,16 +202,15 @@ body{
   margin:10px 0;
   padding:11px 14px;
   font-size:16px;
-  background:rgba(248,250,251,0.86);
+  background:var(--card);
   color:var(--text);
-  border:1px solid rgba(255,255,255,0.78);
+  border:1px solid rgba(255,255,255,0.85);
   border-radius:16px;
-  box-shadow:var(--dark-around-sm), var(--neu-inset);
+  box-shadow:var(--neu-inset);
   outline:none;
 }
 #s:focus{
   border-color:var(--primary);
-  box-shadow:var(--dark-around), var(--neu-inset);
 }
 .add-item{
   display:flex;
@@ -247,33 +220,33 @@ body{
   width:100%;
   margin:8px 0 12px;
   padding:11px 14px;
-  border:1px solid rgba(255,255,255,0.85);
+  border:1px solid rgba(255,255,255,0.88);
   border-radius:16px;
-  background:linear-gradient(145deg, rgba(248,250,251,0.86), rgba(220,231,236,0.80));
+  background:var(--card);
   color:var(--dark-primary);
   font-size:16px;
   font-weight:700;
-  box-shadow:var(--dark-around-sm);
+  box-shadow:var(--neu-card);
   cursor:pointer;
 }
 
-/* Item Rows */
+/* Neomorphic Item Rows */
 .row{
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap:8px;
   padding:10px 12px;
-  margin-bottom:8px;
+  margin-bottom:10px;
   border-radius:16px;
-  background:linear-gradient(145deg, rgba(248,250,251,0.86), rgba(234,241,244,0.80));
-  border:1px solid rgba(255,255,255,0.85);
-  box-shadow:var(--dark-around-sm);
+  background:var(--card);
+  border:1px solid rgba(255,255,255,0.88);
+  box-shadow:var(--neu-card);
 }
 .row.on{
-  background:linear-gradient(145deg, rgba(220,231,236,0.92), rgba(199,214,222,0.86));
+  background:var(--soft-blue);
   border-color:rgba(255,255,255,0.92);
-  box-shadow:var(--dark-around-sm), var(--neu-inset);
+  box-shadow:var(--neu-inset);
 }
 .row label{
   flex:1;
@@ -300,7 +273,7 @@ body{
   text-align:center;
   border:1.5px solid var(--dark-primary);
   border-radius:12px;
-  background:rgba(255,255,255,0.95);
+  background:var(--card);
   color:var(--text);
   box-shadow:var(--neu-inset);
   outline:none;
@@ -314,9 +287,9 @@ body{
   color:var(--dark-primary);
   font-weight:700;
   font-size:15.5px;
-  background:rgba(234,241,244,0.88);
-  border:1px solid rgba(255,255,255,0.82);
-  box-shadow:0 0 6px rgba(32,44,53,0.22);
+  background:var(--bg);
+  border:1px solid rgba(255,255,255,0.85);
+  box-shadow:var(--neu-sm);
   padding:4px 8px;
   border-radius:12px;
 }
@@ -327,25 +300,25 @@ body{
   width:100%;
   margin:14px 0;
   padding:14px;
-  border:1px solid rgba(255,255,255,0.55);
-  border-radius:18px;
-  background:linear-gradient(145deg, var(--primary), var(--dark-primary));
+  border:1px solid rgba(255,255,255,0.65);
+  border-radius:16px;
+  background:var(--dark-primary);
   color:var(--card);
   font-size:17px;
   font-weight:700;
-  box-shadow:var(--dark-around);
+  box-shadow:var(--neu-card);
   cursor:pointer;
 }
 .card{
-  margin:9px 0;
+  margin:10px 0;
   padding:12px 14px;
-  background:linear-gradient(145deg, rgba(248,250,251,0.86), rgba(220,231,236,0.80));
-  border:1px solid rgba(255,255,255,0.85);
-  border-radius:18px;
+  background:var(--card);
+  border:1px solid rgba(255,255,255,0.88);
+  border-radius:16px;
   display:flex;
   align-items:center;
   gap:10px;
-  box-shadow:var(--dark-around-sm);
+  box-shadow:var(--neu-card);
 }
 .card .info{
   flex:1;
@@ -356,27 +329,27 @@ body{
 .card .info b{font-size:17px}
 .card .info small{color:var(--sec-text);font-size:14px}
 .del{
-  border:1px solid rgba(231,107,100,0.75);
+  border:1px solid var(--delete);
   color:var(--delete);
-  background:rgba(248,250,251,0.92);
+  background:var(--card);
   border-radius:12px;
   padding:7px 11px;
   font-size:14px;
   font-weight:700;
-  box-shadow:0 0 8px rgba(32,44,53,0.22);
+  box-shadow:var(--neu-sm);
 }
 .top-bar{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  background:linear-gradient(145deg, rgba(248,250,251,0.86), rgba(220,231,236,0.80));
-  border:1px solid rgba(255,255,255,0.85);
-  border-radius:18px;
+  background:var(--card);
+  border:1px solid rgba(255,255,255,0.88);
+  border-radius:16px;
   padding:11px 14px;
   margin-bottom:10px;
   font-weight:700;
   color:var(--dark-primary);
-  box-shadow:var(--dark-around-sm);
+  box-shadow:var(--neu-card);
 }
 .back-btn{
   background:none;
@@ -389,24 +362,25 @@ body{
 .bar{
   position:sticky;
   bottom:0;
-  background:rgba(234,241,244,0.76);
+  background:rgba(234,241,244,0.82);
+  backdrop-filter:blur(6px);
   padding:6px 0 2px;
-  border-radius:18px;
+  border-radius:16px;
 }
 img.preview-img{
   width:100%;
-  border-radius:18px;
+  border-radius:16px;
   display:block;
-  box-shadow:var(--dark-around);
+  box-shadow:var(--neu-card);
 }
 .empty-search{
   text-align:center;
   color:var(--sec-text);
   padding:22px 10px;
   font-weight:600;
-  background:rgba(248,250,251,0.86);
+  background:var(--card);
   border-radius:16px;
-  box-shadow:var(--dark-around-sm);
+  box-shadow:var(--neu-card);
 }
 </style>
 </head>
@@ -566,48 +540,11 @@ function locationPinSVG(){
   `;
 }
 
+// Uses icon.svg from www folder
 function shopLogoSVG(){
   return `
     <div class="shop-logo-wrap">
-      <svg class="shop-logo" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <defs>
-          <radialGradient id="logoBtnGrad" cx="42%" cy="35%" r="65%">
-            <stop offset="0%" stop-color="#FFFFFF"/>
-            <stop offset="72%" stop-color="#EAF3F8"/>
-            <stop offset="100%" stop-color="#CFE0EC"/>
-          </radialGradient>
-          <linearGradient id="awningDarkGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stop-color="#3F6784"/>
-            <stop offset="100%" stop-color="#294860"/>
-          </linearGradient>
-          <linearGradient id="awningLightGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stop-color="#C3DCF0"/>
-            <stop offset="100%" stop-color="#9AC1DF"/>
-          </linearGradient>
-          <linearGradient id="shopBodyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stop-color="#3B627E"/>
-            <stop offset="100%" stop-color="#27445B"/>
-          </linearGradient>
-        </defs>
-
-        <circle cx="60" cy="60" r="54" fill="url(#logoBtnGrad)" stroke="#B8CEE0" stroke-width="1.5"/>
-
-        <path d="M32 56 H88 V86 H32 Z" fill="url(#shopBodyGrad)"/>
-
-        <path d="M40 31 Q42 28 46 28 H74 Q78 28 80 31 L93 56 H27 Z" fill="url(#awningDarkGrad)"/>
-        <polygon points="48,28 56,28 52,56 40,56" fill="url(#awningLightGrad)"/>
-        <polygon points="64,28 72,28 80,56 68,56" fill="url(#awningLightGrad)"/>
-
-        <path d="M27 56 H39.6 V58.5 A6.3 6.3 0 0 1 27 58.5 Z" fill="url(#awningLightGrad)"/>
-        <path d="M39.6 56 H52.2 V58.5 A6.3 6.3 0 0 1 39.6 58.5 Z" fill="url(#awningDarkGrad)"/>
-        <path d="M52.2 56 H64.8 V58.5 A6.3 6.3 0 0 1 52.2 58.5 Z" fill="url(#awningLightGrad)"/>
-        <path d="M64.8 56 H77.4 V58.5 A6.3 6.3 0 0 1 64.8 58.5 Z" fill="url(#awningDarkGrad)"/>
-        <path d="M77.4 56 H93 V58.5 A6.3 6.3 0 0 1 77.4 58.5 Z" fill="url(#awningLightGrad)"/>
-
-        <path d="M51 86 V70 Q51 64 57 64 H63 Q69 64 69 70 V86 Z" fill="#F4F8FB"/>
-
-        <rect x="27" y="85" width="66" height="7.5" rx="3.75" fill="#233E53"/>
-      </svg>
+      <img class="shop-logo-img" src="icon.svg" alt="Shop Logo">
     </div>
   `;
 }
@@ -878,7 +815,7 @@ function entry(){
   $("#exp").onclick=exportList;
 }
 
-function loadBgImage(src){
+function loadImageFile(src){
   return new Promise(resolve=>{
     const img=new Image();
     img.onload=()=>resolve(img);
@@ -898,22 +835,23 @@ function drawRoundedRectPath(g, x, y, w, h, r){
   g.closePath();
 }
 
-function drawDarkAroundCard(g, x, y, w, h, r, fillStyle, strokeStyle = "rgba(255,255,255,0.88)", shadowAlpha = 0.28){
+// Clean Neomorphic Card (like uploaded screenshot with previous palette)
+function drawNeuBox(g, x, y, w, h, r, fillStyle, strokeStyle = "rgba(255,255,255,0.92)"){
   g.save();
-  g.shadowColor = `rgba(32, 44, 53, ${shadowAlpha})`;
-  g.shadowBlur = 18;
-  g.shadowOffsetX = 0;
-  g.shadowOffsetY = 0;
+  g.shadowColor = "rgba(255, 255, 255, 0.94)";
+  g.shadowBlur = 14;
+  g.shadowOffsetX = -6;
+  g.shadowOffsetY = -6;
   drawRoundedRectPath(g, x, y, w, h, r);
   g.fillStyle = fillStyle;
   g.fill();
   g.restore();
 
   g.save();
-  g.shadowColor = `rgba(32, 44, 53, ${Math.min(0.38, shadowAlpha + 0.08)})`;
+  g.shadowColor = "rgba(155, 178, 191, 0.48)";
   g.shadowBlur = 14;
-  g.shadowOffsetX = 0;
-  g.shadowOffsetY = 5;
+  g.shadowOffsetX = 6;
+  g.shadowOffsetY = 6;
   drawRoundedRectPath(g, x, y, w, h, r);
   g.fillStyle = fillStyle;
   g.fill();
@@ -923,36 +861,6 @@ function drawDarkAroundCard(g, x, y, w, h, r, fillStyle, strokeStyle = "rgba(255
   g.strokeStyle = strokeStyle;
   g.lineWidth = 2;
   g.stroke();
-}
-
-// Magnifies exact corresponding background area (anchored to top/box position so top elements stay aligned & zoomed)
-function drawMagnifyBgBox(g, x, y, w, h, r, bgImg, canvasW, canvasH, zoomFactor, tintFill, alpha = 0.55){
-  drawDarkAroundCard(g, x, y, w, h, r, tintFill, "rgba(255, 255, 255, 0.88)", 0.30);
-
-  if(bgImg){
-    g.save();
-    drawRoundedRectPath(g, x + 2, y + 2, w - 4, h - 4, Math.max(2, r - 2));
-    g.clip();
-
-    const fullScale = Math.max(canvasW / bgImg.width, canvasH / bgImg.height);
-    const fullW = bgImg.width * fullScale;
-    const fullH = bgImg.height * fullScale;
-    const fullX = (canvasW - fullW) / 2;
-    const fullY = 0;
-
-    // Anchor magnification around box center-top so top elements (like "1" at top) show slightly zoomed
-    const anchorX = x + w / 2;
-    const anchorY = y + h * 0.35;
-
-    const zW = fullW * zoomFactor;
-    const zH = fullH * zoomFactor;
-    const zX = anchorX - ((anchorX - fullX) * zoomFactor);
-    const zY = anchorY - ((anchorY - fullY) * zoomFactor);
-
-    g.globalAlpha = alpha;
-    g.drawImage(bgImg, zX, zY, zW, zH);
-    g.restore();
-  }
 }
 
 function drawCanvasLocationPin(g, cx, cy, size = 24, color = "#455F6D"){
@@ -973,112 +881,6 @@ function drawCanvasLocationPin(g, cx, cy, size = 24, color = "#455F6D"){
   g.restore();
 }
 
-function drawCanvasShopLogo(g, cx, cy, radius = 50){
-  g.save();
-  g.shadowColor = "rgba(32, 44, 53, 0.28)";
-  g.shadowBlur = 12;
-  g.shadowOffsetX = 0;
-  g.shadowOffsetY = 0;
-
-  const btnGrad = g.createRadialGradient(cx - radius * 0.2, cy - radius * 0.3, radius * 0.1, cx, cy, radius);
-  btnGrad.addColorStop(0, "#FFFFFF");
-  btnGrad.addColorStop(0.72, "#EAF3F8");
-  btnGrad.addColorStop(1, "#CFE0EC");
-
-  g.beginPath();
-  g.arc(cx, cy, radius, 0, Math.PI * 2);
-  g.fillStyle = btnGrad;
-  g.fill();
-  g.restore();
-
-  g.beginPath();
-  g.arc(cx, cy, radius, 0, Math.PI * 2);
-  g.strokeStyle = "#B8CEE0";
-  g.lineWidth = 2;
-  g.stroke();
-
-  const scale = radius / 60;
-  g.save();
-  g.translate(cx - 60 * scale, cy - 60 * scale);
-  g.scale(scale, scale);
-
-  const bodyGrad = g.createLinearGradient(0, 56, 0, 86);
-  bodyGrad.addColorStop(0, "#3B627E");
-  bodyGrad.addColorStop(1, "#27445B");
-  g.fillStyle = bodyGrad;
-  g.fillRect(32, 56, 56, 30);
-
-  const darkAwning = g.createLinearGradient(0, 28, 0, 56);
-  darkAwning.addColorStop(0, "#3F6784");
-  darkAwning.addColorStop(1, "#294860");
-  g.fillStyle = darkAwning;
-  g.beginPath();
-  g.moveTo(40, 31);
-  g.quadraticCurveTo(42, 28, 46, 28);
-  g.lineTo(74, 28);
-  g.quadraticCurveTo(78, 28, 80, 31);
-  g.lineTo(93, 56);
-  g.lineTo(27, 56);
-  g.closePath();
-  g.fill();
-
-  const lightAwning = g.createLinearGradient(0, 28, 0, 56);
-  lightAwning.addColorStop(0, "#C3DCF0");
-  lightAwning.addColorStop(1, "#9AC1DF");
-  g.fillStyle = lightAwning;
-
-  g.beginPath();
-  g.moveTo(48, 28);
-  g.lineTo(56, 28);
-  g.lineTo(52, 56);
-  g.lineTo(40, 56);
-  g.closePath();
-  g.fill();
-
-  g.beginPath();
-  g.moveTo(64, 28);
-  g.lineTo(72, 28);
-  g.lineTo(80, 56);
-  g.lineTo(68, 56);
-  g.closePath();
-  g.fill();
-
-  const flaps = [
-    { x: 27, w: 12.6, light: true },
-    { x: 39.6, w: 12.6, light: false },
-    { x: 52.2, w: 12.6, light: true },
-    { x: 64.8, w: 12.6, light: false },
-    { x: 77.4, w: 15.6, light: true }
-  ];
-  flaps.forEach(f => {
-    g.fillStyle = f.light ? lightAwning : darkAwning;
-    g.beginPath();
-    g.moveTo(f.x, 56);
-    g.lineTo(f.x + f.w, 56);
-    g.lineTo(f.x + f.w, 58.5);
-    g.arc(f.x + f.w / 2, 58.5, f.w / 2, 0, Math.PI, false);
-    g.closePath();
-    g.fill();
-  });
-
-  g.fillStyle = "#F4F8FB";
-  g.beginPath();
-  g.moveTo(51, 86);
-  g.lineTo(51, 70);
-  g.quadraticCurveTo(51, 64, 57, 64);
-  g.lineTo(63, 64);
-  g.quadraticCurveTo(69, 64, 69, 70);
-  g.lineTo(69, 86);
-  g.closePath();
-  g.fill();
-
-  g.fillStyle = "#233E53";
-  drawRoundedRectPath(g, 27, 85, 66, 7.5, 3.75);
-  g.fill();
-
-  g.restore();
-}
-
 async function draw4K(rows, dateStr){
   const W = 1080;
   const targetWidth = 3840;
@@ -1086,8 +888,8 @@ async function draw4K(rows, dateStr){
 
   const extraRows = typeof EXTRA_ROWS === "number" ? EXTRA_ROWS : 4;
   const startY = 374;
-  const rowH = 102;
-  const pillHeight = 82;
+  const rowH = 104;
+  const pillHeight = 84;
   const totalSlots = rows.length + extraRows;
   const H = startY + (totalSlots * rowH) + 36;
 
@@ -1103,11 +905,15 @@ async function draw4K(rows, dateStr){
   const boxW = R - L;
   const HF = '"Noto Sans Devanagari","Segoe UI",sans-serif';
 
-  // 1. Full App Background (Anchored at Top)
+  // 1. Normal Background (No Zoom)
   g.fillStyle = "#EAF1F4";
   g.fillRect(0, 0, W, H);
 
-  const bgImg = await loadBgImage("app_bg.png");
+  const [bgImg, iconSvgImg] = await Promise.all([
+    loadImageFile("app_bg.png"),
+    loadImageFile("icon.svg")
+  ]);
+
   if(bgImg){
     const imgRatio = bgImg.width / bgImg.height;
     const canvasRatio = W / H;
@@ -1116,42 +922,45 @@ async function draw4K(rows, dateStr){
       dh = H;
       dw = H * imgRatio;
       dx = (W - dw) / 2;
-      dy = 0;
     }else{
       dw = W;
       dh = W / imgRatio;
-      dx = 0;
-      dy = 0;
+      dy = (H - dh) / 2;
     }
     g.drawImage(bgImg, dx, dy, dw, dh);
   }
 
-  // 2. Top Heading Box - Magnifies Exact Top Background Area Slightly
+  // 2. Normal Top Shop Heading Box (No Zoom) + icon.svg
   const topY = 24;
   const topH = 152;
-  const topGrad = g.createLinearGradient(L, topY, R, topY + topH);
-  topGrad.addColorStop(0, "rgba(248, 250, 251, 0.56)");
-  topGrad.addColorStop(1, "rgba(220, 231, 236, 0.50)");
-  drawMagnifyBgBox(g, L, topY, boxW, topH, 38, bgImg, W, H, 1.32, topGrad, 0.62);
+  drawNeuBox(g, L, topY, boxW, topH, 28, "#F8FAFB", "rgba(255,255,255,0.92)");
 
   const badgeCx = L + 84;
   const badgeCy = topY + topH / 2;
-  drawCanvasShopLogo(g, badgeCx, badgeCy, 50);
+  drawNeuBox(g, badgeCx - 48, badgeCy - 48, 96, 96, 48, "#F8FAFB", "#DCE7EC");
+
+  if(iconSvgImg){
+    const iconSize = 68;
+    g.drawImage(iconSvgImg, badgeCx - iconSize / 2, badgeCy - iconSize / 2, iconSize, iconSize);
+  }else{
+    g.fillStyle = "#455F6D";
+    g.fillRect(badgeCx - 20, badgeCy - 14, 40, 28);
+  }
 
   g.fillStyle = "#202C35";
   g.textBaseline = "alphabetic";
   g.textAlign = "left";
   g.font = `bold 48px ${HF}`;
-  g.fillText(SHOP, L + 150, topY + 68);
+  g.fillText(SHOP, L + 148, topY + 68);
 
-  drawCanvasLocationPin(g, L + 162, topY + 105, 26, "#455F6D");
+  drawCanvasLocationPin(g, L + 160, topY + 105, 26, "#455F6D");
   g.fillStyle = "#647783";
   g.font = `600 28px ${HF}`;
-  g.fillText(PLACE, L + 182, topY + 114);
+  g.fillText(PLACE, L + 180, topY + 114);
 
   const divX = R - 134;
   g.strokeStyle = "#C7D6DE";
-  g.lineWidth = 2.5;
+  g.lineWidth = 2;
   g.beginPath();
   g.moveTo(divX, topY + 24);
   g.lineTo(divX, topY + topH - 24);
@@ -1168,7 +977,7 @@ async function draw4K(rows, dateStr){
 
   g.beginPath();
   g.arc(cartCx + 16, cartCy - 16, 18, 0, Math.PI * 2);
-  g.fillStyle = "#607D8B";
+  g.fillStyle = "#455F6D";
   g.fill();
   g.fillStyle = "#FFFFFF";
   g.font = `bold 20px ${HF}`;
@@ -1176,13 +985,10 @@ async function draw4K(rows, dateStr){
   g.textBaseline = "middle";
   g.fillText(String(rows.length), cartCx + 16, cartCy - 15);
 
-  // 3. Date & Total List Heading Box
+  // 3. Normal Date & Total List Bar (No Zoom)
   const metaY = 192;
   const metaH = 66;
-  const metaGrad = g.createLinearGradient(L, metaY, R, metaY + metaH);
-  metaGrad.addColorStop(0, "rgba(248, 250, 251, 0.84)");
-  metaGrad.addColorStop(1, "rgba(220, 231, 236, 0.78)");
-  drawMagnifyBgBox(g, L, metaY, boxW, metaH, metaH / 2, bgImg, W, H, 1.28, metaGrad, 0.35);
+  drawNeuBox(g, L, metaY, boxW, metaH, metaH / 2, "#F8FAFB", "rgba(255,255,255,0.92)");
 
   g.fillStyle = "#455F6D";
   g.textAlign = "left";
@@ -1193,10 +999,7 @@ async function draw4K(rows, dateStr){
   const pillW = 286;
   const pillX = R - pillW - 4;
   drawRoundedRectPath(g, pillX, metaY + 4, pillW, metaH - 8, (metaH - 8) / 2);
-  const pillGrad = g.createLinearGradient(pillX, metaY + 4, pillX + pillW, metaY + metaH - 4);
-  pillGrad.addColorStop(0, "#607D8B");
-  pillGrad.addColorStop(1, "#455F6D");
-  g.fillStyle = pillGrad;
+  g.fillStyle = "#455F6D";
   g.fill();
 
   g.fillStyle = "#FFFFFF";
@@ -1204,13 +1007,10 @@ async function draw4K(rows, dateStr){
   g.textAlign = "center";
   g.fillText(`कुल सूची: ${rows.length}`, pillX + pillW / 2 - 12, metaY + metaH / 2 + 1);
 
-  // 4. Table Heading Box
+  // 4. Normal Table Heading Box (No Zoom)
   const thY = 276;
   const thH = 78;
-  const thGrad = g.createLinearGradient(L, thY, R, thY + thH);
-  thGrad.addColorStop(0, "rgba(96, 125, 139, 0.88)");
-  thGrad.addColorStop(1, "rgba(69, 95, 109, 0.92)");
-  drawMagnifyBgBox(g, L, thY, boxW, thH, thH / 2, bgImg, W, H, 1.28, thGrad, 0.32);
+  drawNeuBox(g, L, thY, boxW, thH, 24, "#607D8B", "rgba(255,255,255,0.75)");
 
   g.fillStyle = "#FFFFFF";
   g.font = `bold 32px ${HF}`;
@@ -1223,16 +1023,13 @@ async function draw4K(rows, dateStr){
   g.fillText("Quantity", 675, thY + thH / 2 + 1);
   g.fillText("Unit", R - 105, thY + thH / 2 + 1);
 
-  // 5. Ticked Item Pill Rows
+  // 5. Clean Neomorphic Item Rows (Bigger Saman List Font Size)
   for(let i = 0; i < rows.length; i++){
     const r = rows[i];
     const y = startY + (i * rowH);
     const cy = y + (pillHeight / 2);
 
-    const rowGrad = g.createLinearGradient(L, y, R, y + pillHeight);
-    rowGrad.addColorStop(0, "rgba(248, 250, 251, 0.94)");
-    rowGrad.addColorStop(1, "rgba(234, 241, 244, 0.90)");
-    drawDarkAroundCard(g, L, y, boxW, pillHeight, pillHeight / 2, rowGrad, "rgba(255, 255, 255, 0.92)", 0.24);
+    drawNeuBox(g, L, y, boxW, pillHeight, 24, "#F8FAFB", "rgba(255,255,255,0.94)");
 
     g.fillStyle = "#647783";
     g.font = `bold 34px ${HF}`;
@@ -1252,8 +1049,8 @@ async function draw4K(rows, dateStr){
     const uW = 142;
     const uH = 50;
     const uX = R - 176;
-    drawRoundedRectPath(g, uX, cy - (uH / 2), uW, uH, uH / 2);
-    g.fillStyle = "#DCE7EC";
+    drawRoundedRectPath(g, uX, cy - (uH / 2), uW, uH, 16);
+    g.fillStyle = "#EAF1F4";
     g.fill();
     g.strokeStyle = "#C7D6DE";
     g.lineWidth = 1.5;

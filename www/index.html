@@ -17,6 +17,7 @@
   --divider:#C7D6DE;
   --delete:#E76B64;
   --app-bg:url("app_bg.png");
+  --header-pattern:url("pattern.png");
   --float-line-shadow:0 3px 0 rgba(32, 44, 53, 0.24), 0 1px 0 rgba(32, 44, 53, 0.14);
   --neu-card:7px 7px 14px rgba(155, 178, 191, 0.42), -7px -7px 14px rgba(255, 255, 255, 0.90);
   --neu-sm:4px 4px 10px rgba(155, 178, 191, 0.38), -4px -4px 10px rgba(255, 255, 255, 0.88);
@@ -41,7 +42,7 @@ body{
   padding:12px 14px 28px;
 }
 
-/* Solid White Top Heading Box with Light Pattern & Fine Non-Blur Dark Line Shadow */
+/* Top Heading Box: Solid White Base + 25% Opacity pattern.png + Fine Non-Blur Dark Line Shadow */
 .top-card{
   position:relative;
   overflow:hidden;
@@ -59,11 +60,12 @@ body{
   content:"";
   position:absolute;
   inset:0;
-  background-image:var(--app-bg);
-  background-size:cover;
-  background-position:center top;
-  background-attachment:fixed;
-  opacity:0.15;
+  background-image:var(--header-pattern);
+  background-size:100% 100%;
+  background-position:center;
+  background-repeat:no-repeat;
+  mix-blend-mode:screen;
+  opacity:0.25;
   pointer-events:none;
   z-index:0;
 }
@@ -147,7 +149,7 @@ body{
   box-shadow:0 1px 0 rgba(32, 44, 53, 0.25);
 }
 
-/* Solid White Date & Kul Suchi Bar with Light Pattern */
+/* Date & Kul Suchi Bar */
 .date-bar{
   position:relative;
   overflow:hidden;
@@ -162,18 +164,6 @@ body{
   align-items:center;
   justify-content:space-between;
   padding:3px;
-}
-.date-bar::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background-image:var(--app-bg);
-  background-size:cover;
-  background-position:center top;
-  background-attachment:fixed;
-  opacity:0.12;
-  pointer-events:none;
-  z-index:0;
 }
 .date-bar > *{
   position:relative;
@@ -216,7 +206,7 @@ body{
   flex-shrink:0;
 }
 
-/* Table Heading Box with Light Pattern */
+/* Table Heading Box */
 .th-bar{
   position:relative;
   overflow:hidden;
@@ -232,18 +222,6 @@ body{
   border:1px solid rgba(255, 255, 255, 0.72);
   box-shadow:var(--float-line-shadow);
   margin-bottom:10px;
-}
-.th-bar::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background-image:var(--app-bg);
-  background-size:cover;
-  background-position:center top;
-  background-attachment:fixed;
-  opacity:0.10;
-  pointer-events:none;
-  z-index:0;
 }
 .th-bar > *{
   position:relative;
@@ -891,8 +869,9 @@ function drawRoundedRectPath(g, x, y, w, h, r){
   g.closePath();
 }
 
-// Solid base color + very light pattern overlay + fine non-blur dark line shadow below
-function drawSolidWithLightPatternBox(g, x, y, w, h, r, solidFill, bgImg, fullDraw, patternAlpha = 0.14, strokeStyle = "rgba(255,255,255,0.92)"){
+// Draws solid white card with pattern.png at 25% opacity using 'screen' blend mode
+// and fine non-blur dark line shadow below
+function drawTopPatternCard(g, x, y, w, h, r, patternImg, alpha = 0.25){
   // Fine crisp dark line shadow below (no blur)
   drawRoundedRectPath(g, x, y + 3, w, h, r);
   g.fillStyle = "rgba(32, 44, 53, 0.24)";
@@ -906,11 +885,43 @@ function drawSolidWithLightPatternBox(g, x, y, w, h, r, solidFill, bgImg, fullDr
   drawRoundedRectPath(g, x, y, w, h, r);
   g.clip();
 
-  // Solid base color first
+  // Solid card base
+  g.fillStyle = "#F8FAFB";
+  g.fillRect(x, y, w, h);
+
+  // Draw pattern.png with screen composite so black disappears and flowers/leaves show lightly
+  if(patternImg){
+    g.save();
+    g.globalCompositeOperation = "screen";
+    g.globalAlpha = alpha;
+    g.drawImage(patternImg, x, y, w, h);
+    g.restore();
+  }
+
+  g.restore();
+
+  drawRoundedRectPath(g, x, y, w, h, r);
+  g.strokeStyle = "rgba(255, 255, 255, 0.92)";
+  g.lineWidth = 2;
+  g.stroke();
+}
+
+function drawSolidWithLightPatternBox(g, x, y, w, h, r, solidFill, bgImg, fullDraw, patternAlpha = 0.14, strokeStyle = "rgba(255,255,255,0.92)"){
+  drawRoundedRectPath(g, x, y + 3, w, h, r);
+  g.fillStyle = "rgba(32, 44, 53, 0.24)";
+  g.fill();
+
+  drawRoundedRectPath(g, x, y + 1.5, w, h, r);
+  g.fillStyle = "rgba(32, 44, 53, 0.13)";
+  g.fill();
+
+  g.save();
+  drawRoundedRectPath(g, x, y, w, h, r);
+  g.clip();
+
   g.fillStyle = solidFill;
   g.fillRect(x, y, w, h);
 
-  // Light pattern on top
   if(bgImg && fullDraw && fullDraw.dw > 0 && fullDraw.dh > 0 && patternAlpha > 0){
     const scaleX = bgImg.width / fullDraw.dw;
     const scaleY = bgImg.height / fullDraw.dh;
@@ -1101,9 +1112,10 @@ async function draw4K(rows, dateStr){
   g.fillStyle = "#EAF1F4";
   g.fillRect(0, 0, W, H);
 
-  const [bgImg, iconSvgImg] = await Promise.all([
+  const [bgImg, iconSvgImg, patternImg] = await Promise.all([
     loadImageFile("app_bg.png"),
-    loadImageFile("icon.svg")
+    loadImageFile("icon.svg"),
+    loadImageFile("pattern.png")
   ]);
 
   let fullDraw = null;
@@ -1124,10 +1136,10 @@ async function draw4K(rows, dateStr){
     g.drawImage(bgImg, dx, dy, dw, dh);
   }
 
-  // 2. Solid White Top Heading Box with Light Pattern & Fine Non-Blur Dark Line Shadow
+  // 2. Top Heading Box with pattern.png (25% opacity) + Fine Non-Blur Dark Line Shadow
   const topY = 24;
   const topH = 156;
-  drawSolidWithLightPatternBox(g, L, topY, boxW, topH, 28, "#F8FAFB", bgImg, fullDraw, 0.15, "rgba(255, 255, 255, 0.92)");
+  drawTopPatternCard(g, L, topY, boxW, topH, 28, patternImg, 0.25);
 
   // Bigger Round Logo (icon.svg)
   const badgeCx = L + 88;
@@ -1194,7 +1206,7 @@ async function draw4K(rows, dateStr){
   g.textBaseline = "middle";
   g.fillText(String(rows.length), cartCx + 17, cartCy - 16);
 
-  // 3. Solid White Date & Total List Bar with Light Pattern
+  // 3. Date & Total List Bar
   const metaY = 194;
   const metaH = 66;
   drawSolidWithLightPatternBox(g, L, metaY, boxW, metaH, metaH / 2, "#F8FAFB", bgImg, fullDraw, 0.12, "rgba(255, 255, 255, 0.92)");
@@ -1218,7 +1230,7 @@ async function draw4K(rows, dateStr){
   g.fillText(`कुल सूची: ${rows.length}`, pillX + 24, metaY + metaH / 2 + 1);
   drawCanvasThreeLinesIcon(g, pillX + pillW - 44, metaY + (metaH - 24) / 2, 24, "#FFFFFF");
 
-  // 4. Table Heading Box with Light Pattern
+  // 4. Table Heading Box
   const thY = 276;
   const thH = 78;
   drawSolidWithLightPatternBox(g, L, thY, boxW, thH, 24, "#607D8B", bgImg, fullDraw, 0.10, "rgba(255, 255, 255, 0.72)");
